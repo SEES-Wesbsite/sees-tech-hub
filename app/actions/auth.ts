@@ -3,12 +3,10 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
-import { Redis } from '@upstash/redis'
-import { Resend } from 'resend'
 
 // Generate synthetic email from matric number
-export function getSyntheticEmail(matricNumber: string) {
-  return `${matricNumber.trim().toLowerCase()}@student.unilag.edu.ng`
+function getSyntheticEmail(matricNumber: string) {
+  return `${matricNumber.trim().toLowerCase()}@live.unilag.edu.ng`
 }
 
 export async function login(formData: FormData) {
@@ -33,7 +31,7 @@ export async function login(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/dashboard')
 }
 
 export async function signup(formData: FormData) {
@@ -91,7 +89,7 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  redirect('/setup-profile') // Redirect to complete profile
+  redirect('/onboarding')
 }
 
 export async function logout() {
