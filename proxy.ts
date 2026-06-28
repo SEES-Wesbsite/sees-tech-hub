@@ -32,12 +32,34 @@ export async function proxy(request: NextRequest) {
 
   // Protect routes - if user is not logged in and on a protected route, redirect to login
   const isAuthPage = request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')
-  const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard') || request.nextUrl.pathname.startsWith('/admin') || request.nextUrl.pathname.startsWith('/events') || request.nextUrl.pathname.startsWith('/projects') || request.nextUrl.pathname.startsWith('/jobs')
+  const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard') || 
+                           request.nextUrl.pathname.startsWith('/admin') || 
+                           request.nextUrl.pathname.startsWith('/events') || 
+                           request.nextUrl.pathname.startsWith('/projects') || 
+                           request.nextUrl.pathname.startsWith('/jobs') ||
+                           request.nextUrl.pathname.startsWith('/u/')
   
+  const isOnboardingRoute = request.nextUrl.pathname.startsWith('/onboarding')
+
   if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
+  }
+
+  // Check onboarding status for logged in users trying to access protected routes
+  if (user && isProtectedRoute && !isOnboardingRoute) {
+    const { data: profile } = await supabase
+      .from('users')
+      .select('onboarding_status')
+      .eq('id', user.id)
+      .single();
+
+    if (profile && profile.onboarding_status !== 'completed') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/onboarding'
+      return NextResponse.redirect(url)
+    }
   }
 
   // Redirect logged-in users away from auth pages to their dashboard

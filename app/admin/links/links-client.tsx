@@ -2,13 +2,14 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Link as LinkIcon, Plus, Copy, ExternalLink, Activity, Check, Loader2 } from 'lucide-react'
+import { Link as LinkIcon, Plus, Copy, ExternalLink, Activity, Check } from 'lucide-react'
 import { createShortLink } from '@/app/actions/admin-links'
+import { Loader } from '@/components/ui/loader'
 
 type ShortLink = {
   id: string
   slug: string
-  original_url: string
+  destination_url: string
   description: string | null
   clicks: number
   created_at: string
@@ -70,7 +71,7 @@ export function LinksClient({ initialLinks }: { initialLinks: ShortLink[] }) {
     <div className="p-4 md:p-8 max-w-6xl mx-auto space-y-8">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-3">
+          <h1 className="text-3xl font-serif font-semibold tracking-tight text-foreground flex items-center gap-3">
             <LinkIcon className="w-8 h-8 text-brand" />
             Short Links
           </h1>
@@ -80,7 +81,7 @@ export function LinksClient({ initialLinks }: { initialLinks: ShortLink[] }) {
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand text-black font-bold shadow-[0_0_15px_rgba(149,253,226,0.2)] hover:shadow-[0_0_20px_rgba(149,253,226,0.4)] transition-all"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand text-black font-serif font-semibold shadow-[0_0_15px_rgba(149,253,226,0.2)] hover:shadow-[0_0_20px_rgba(149,253,226,0.4)] transition-all"
         >
           <Plus className="w-5 h-5" /> New Link
         </motion.button>
@@ -115,7 +116,7 @@ export function LinksClient({ initialLinks }: { initialLinks: ShortLink[] }) {
                   <motion.tr variants={itemVariants} key={link.id} className="border-b border-border/50 hover:bg-muted/10 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex flex-col">
-                        <span className="font-bold text-foreground text-sm flex items-center gap-2">
+                        <span className="font-serif font-semibold text-foreground text-sm flex items-center gap-2">
                           /go/{link.slug}
                         </span>
                         {link.description && <span className="text-xs text-muted-foreground mt-0.5">{link.description}</span>}
@@ -123,14 +124,14 @@ export function LinksClient({ initialLinks }: { initialLinks: ShortLink[] }) {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 max-w-xs md:max-w-md">
-                        <a href={link.original_url} target="_blank" rel="noopener noreferrer" className="text-sm text-brand truncate hover:underline">
-                          {link.original_url}
+                        <a href={link.destination_url} target="_blank" rel="noopener noreferrer" className="text-sm text-brand truncate hover:underline">
+                          {link.destination_url}
                         </a>
                         <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-1.5 text-foreground font-bold">
+                      <div className="flex items-center justify-end gap-1.5 text-foreground font-serif font-semibold">
                         <Activity className="w-4 h-4 text-muted-foreground" /> {link.clicks}
                       </div>
                     </td>
@@ -168,7 +169,7 @@ export function LinksClient({ initialLinks }: { initialLinks: ShortLink[] }) {
               onClick={e => e.stopPropagation()}
               className="bg-card border border-border rounded-3xl p-6 w-full max-w-md shadow-2xl"
             >
-              <h2 className="text-xl font-bold text-foreground mb-6">Create Short Link</h2>
+              <h2 className="text-xl font-serif font-semibold text-foreground mb-6">Create Short Link</h2>
               
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -217,16 +218,16 @@ export function LinksClient({ initialLinks }: { initialLinks: ShortLink[] }) {
                     type="button"
                     onClick={() => setIsModalOpen(false)}
                     disabled={isSubmitting}
-                    className="flex-1 py-3 rounded-xl font-bold text-muted-foreground hover:bg-input transition-colors disabled:opacity-50"
+                    className="flex-1 py-3 rounded-xl font-serif font-semibold text-muted-foreground hover:bg-input transition-colors disabled:opacity-50"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting || !originalUrl}
-                    className="flex-1 py-3 rounded-xl bg-brand text-black font-bold flex items-center justify-center gap-2 hover:shadow-[0_0_15px_rgba(149,253,226,0.3)] transition-all disabled:opacity-50"
+                    className="flex-1 py-3 rounded-xl bg-brand text-black font-serif font-semibold flex items-center justify-center gap-2 hover:shadow-[0_0_15px_rgba(149,253,226,0.3)] transition-all disabled:opacity-50"
                   >
-                    {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving</> : 'Create Link'}
+                    {isSubmitting ? <><Loader variant="simple-spin" className="w-4 h-4" /> Saving</> : 'Create Link'}
                   </button>
                 </div>
               </form>

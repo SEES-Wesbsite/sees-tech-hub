@@ -21,7 +21,7 @@ export async function GET(
   // but it's acceptable for an MVP shortener.
   const { data: link } = await supabase
     .from('short_links')
-    .select('id, original_url, clicks')
+    .select('id, destination_url, clicks')
     .eq('slug', slug)
     .single()
 
@@ -37,5 +37,5 @@ export async function GET(
     .eq('id', link.id)
     .then()
 
-  return NextResponse.redirect(link.original_url)
+  return NextResponse.redirect(link.destination_url)
 }

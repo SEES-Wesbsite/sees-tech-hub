@@ -1,25 +1,38 @@
-import { Sidebar } from '@/components/layout/sidebar'
-import { BottomNav } from '@/components/layout/bottom-nav'
+import { createClient } from "@/lib/supabase/server";
+import { ClientDock } from "@/components/layout/client-dock";
+import { redirect } from "next/navigation";
 
-export default function AppLayout({
+export default async function AppLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  return (
-    <div className="flex h-screen bg-background overflow-hidden">
-      {/* Desktop Sidebar */}
-      <Sidebar />
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { data: profile } = await supabase
+    .from("users")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  const isAdmin = profile?.role === "admin";
+
+  return (
+    <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden selection:bg-brand selection:text-[#95fde2]">
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto pb-20 md:pb-0">
-        <div className="h-full">
-          {children}
-        </div>
+      <main className="w-full min-h-screen pb-32 relative z-10 max-w-5xl mx-auto">
+        {children}
       </main>
 
-      {/* Mobile Bottom Navigation */}
-      <BottomNav />
+      {/* Global Dock Navigation */}
+      <ClientDock isAdmin={isAdmin} />
     </div>
-  )
+  );
 }

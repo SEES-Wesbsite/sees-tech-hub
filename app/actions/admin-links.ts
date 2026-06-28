@@ -31,7 +31,7 @@ export async function createShortLink(formData: FormData) {
     .from('short_links')
     .insert({
       slug,
-      original_url: originalUrl,
+      destination_url: originalUrl,
       description: description || null,
       created_by: user.id
     })

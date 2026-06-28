@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Inter, EB_Garamond } from "next/font/google";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
+import { Toaster } from "sonner";
 
-const fontSans = Inter({
+const fontSans = DM_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
 });
 
-const fontSerif = EB_Garamond({
+const fontSerif = Playfair_Display({
   variable: "--font-serif",
   subsets: ["latin"],
 });
@@ -26,10 +27,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fontSans.variable} ${fontSerif.variable} font-sans h-full antialiased dark`}
+      className={`${fontSans.variable} ${fontSerif.variable} font-sans h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+      <body className="min-h-full flex flex-col selection:bg-brand selection:text-[#95fde2]">
+        <Providers>
+          {children}
+          <Toaster theme="dark" position="top-center" richColors />
+        </Providers>
       </body>
     </html>
   );

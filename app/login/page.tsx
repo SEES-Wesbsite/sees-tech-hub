@@ -1,108 +1,103 @@
 'use client'
 
-import { login } from '@/app/actions/auth'
-import { motion } from 'motion/react'
-import { ArrowRight, Lock, User } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'motion/react'
+import { ArrowRight } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
+
+const SLIDESHOW_IMAGES = [
+  'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=1200&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=1200&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=1200&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=1200&fit=crop&q=80',
+]
 
 export default function LoginPage() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
-    }
-  }
+  const supabase = createClient()
+  const [currentImage, setCurrentImage] = useState(0)
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 24 } }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage(prev => (prev + 1) % SLIDESHOW_IMAGES.length)
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const handleGoogleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4 overflow-hidden relative">
-      {/* Subtle background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand/5 rounded-full blur-[120px] pointer-events-none" />
-      
-      <motion.div 
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="w-full max-w-md relative z-10"
-      >
-        <motion.div variants={itemVariants} className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-card border border-border mb-6 shadow-[0_0_40px_rgba(149,253,226,0.1)]">
-            <Lock className="w-8 h-8 text-brand" />
+    <div className="flex min-h-screen">
+      {/* Left: Image Slideshow */}
+      <div className="hidden lg:block lg:w-1/2 relative overflow-hidden bg-muted">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={currentImage}
+            src={SLIDESHOW_IMAGES[currentImage]}
+            alt=""
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.8 }}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </AnimatePresence>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute bottom-12 left-12 right-12">
+          <p className="text-white/90 text-lg font-semibold">SEES Tech Hub</p>
+          <p className="text-white/60 text-sm mt-1">Where builders show their work.</p>
+        </div>
+        {/* Slideshow indicators */}
+        <div className="absolute bottom-12 right-12 flex gap-1.5">
+          {SLIDESHOW_IMAGES.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1 rounded-full transition-all duration-500 ${
+                i === currentImage ? 'w-6 bg-white' : 'w-1.5 bg-white/40'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Right: Login Form */}
+      <div className="flex flex-1 items-center justify-center bg-background p-8">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="w-full max-w-sm"
+        >
+          <div className="mb-10">
+            <h1 className="text-3xl font-serif font-semibold tracking-tight text-foreground">Welcome back</h1>
+            <p className="text-muted-foreground mt-2">Sign in to continue to your dashboard.</p>
           </div>
-          <h2 className="text-4xl font-bold tracking-tight text-foreground mb-3">Welcome Back</h2>
-          <p className="text-muted-foreground text-lg">
-            Sign in to the STH Portal
+
+          <button
+            onClick={handleGoogleLogin}
+            className="group flex w-full items-center justify-center gap-3 rounded-xl bg-foreground px-4 py-4 text-sm font-semibold text-background shadow-sm hover:shadow-md transition-all"
+          >
+            <svg viewBox="0 0 24 24" className="w-5 h-5" aria-hidden="true">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Continue with Google
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+
+          <p className="text-center text-xs text-muted-foreground mt-8">
+            By signing in, you agree to our terms and conditions.
           </p>
         </motion.div>
-
-        <motion.form variants={itemVariants} action={login as unknown as (payload: FormData) => void} className="space-y-6 bg-card p-8 rounded-3xl border border-border shadow-2xl">
-          <div className="space-y-5">
-            <div className="space-y-2">
-              <label htmlFor="matric" className="text-sm font-medium text-foreground ml-1">
-                Matric Number
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-muted-foreground" />
-                </div>
-                <input
-                  id="matric"
-                  name="matric"
-                  type="text"
-                  required
-                  className="block w-full rounded-xl border-0 py-3.5 pl-11 pr-4 text-foreground bg-input/50 ring-1 ring-inset ring-border placeholder:text-muted-foreground focus:ring-2 focus:ring-inset focus:ring-brand transition-all duration-200"
-                  placeholder="e.g. 123456"
-                />
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <div className="flex items-center justify-between ml-1">
-                <label htmlFor="pin" className="text-sm font-medium text-foreground">
-                  6-Digit PIN
-                </label>
-                <a href="/forgot-pin" className="text-xs font-medium text-brand hover:text-brand-light transition-colors">
-                  Forgot PIN?
-                </a>
-              </div>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-muted-foreground" />
-                </div>
-                <input
-                  id="pin"
-                  name="pin"
-                  type="password"
-                  required
-                  className="block w-full rounded-xl border-0 py-3.5 pl-11 pr-4 text-foreground bg-input/50 ring-1 ring-inset ring-border placeholder:text-muted-foreground focus:ring-2 focus:ring-inset focus:ring-brand transition-all duration-200 tracking-[0.2em]"
-                  placeholder="••••••"
-                />
-              </div>
-            </div>
-          </div>
-
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            type="submit"
-            className="group relative flex w-full justify-center items-center gap-2 rounded-xl bg-brand px-4 py-3.5 text-sm font-bold text-black shadow-[0_0_20px_rgba(149,253,226,0.3)] hover:shadow-[0_0_25px_rgba(149,253,226,0.5)] transition-all"
-          >
-            Sign In
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </motion.button>
-        </motion.form>
-        
-        <motion.p variants={itemVariants} className="text-center mt-8 text-muted-foreground">
-          Not a member yet?{' '}
-          <a href="/signup" className="font-semibold text-brand hover:text-brand-light transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-brand after:origin-right after:scale-x-0 hover:after:scale-x-100 hover:after:origin-left after:transition-transform after:duration-300">
-            Apply to join STH
-          </a>
-        </motion.p>
-      </motion.div>
+      </div>
     </div>
   )
 }

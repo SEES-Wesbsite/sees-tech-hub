@@ -2,38 +2,51 @@
 
 export type Profile = {
   id: string
-  matric_number: string
   full_name: string
-  contact_email: string | null
+  preferred_name: string | null
   avatar_url: string | null
-  track: 'software' | 'ai_ml' | 'cybersecurity' | 'embedded_systems' | null
-  academic_year: '100L' | '200L' | '300L' | '400L' | '500L' | null
-  github_url: string | null
-  skills: string[] | null
+  primary_stacks: string[] | null
+  portfolio_link: string | null
+  social_link: string | null
   total_points: number
   role: 'member' | 'admin'
-  verification_status: 'pending' | 'verified' | 'rejected'
-  last_login: string | null
+  onboarding_status: 'pending' | 'quiz_in_progress' | 'completed'
   created_at: string
 }
 
-export type Task = {
+export type Quest = {
   id: string
   title: string
   description: string
-  task_type: 'dsa_sprint' | 'project_build' | 'hackathon' | 'event_attendance'
+  quest_type: 'dsa_problem' | 'quiz' | 'article_read' | 'project_build'
   point_value: number
-  is_active: boolean
-  deadline: string | null
+  difficulty: 'S' | 'A' | 'B' | 'C' | 'D' | 'E'
+  status: 'draft' | 'active' | 'archived'
+  tags: string[]
+  external_url: string | null
+  quiz_id: string | null
+  created_by: string | null
   created_at: string
+}
+
+export type QuestAssignment = {
+  id: string
+  user_id: string
+  quest_id: string
+  week_start: string // DATE string
+  status: 'assigned' | 'in_progress' | 'completed' | 'expired'
+  assigned_at: string
+  completed_at: string | null
 }
 
 export type Submission = {
   id: string
   user_id: string
-  task_id: string
+  assignment_id: string | null
+  quest_id: string
+  quiz_session_id: string | null
   proof_url: string | null
-  status: 'pending' | 'approved' | 'rejected'
+  status: 'pending' | 'approved' | 'rejected' | 'auto_approved'
   ai_confidence_score: number | null
   ai_feedback: string | null
   submitted_at: string
@@ -48,6 +61,8 @@ export type Event = {
   event_date: string
   location: string | null
   points_awarded: number
+  event_type: 'hackathon' | 'alumni_talk' | 'dsa_sprint' | 'general' | 'other'
+  claim_expires_at: string | null
   created_at: string
 }
 
@@ -80,23 +95,45 @@ export type ShortLink = {
   created_at: string
 }
 
-// Tier calculation utility
-export const TIERS = [
-  { name: 'Explorer',   min: 0,   max: 99,  color: '#a3a3a3' },
-  { name: 'Builder',    min: 100, max: 299, color: '#3b82f6' },
-  { name: 'Innovator',  min: 300, max: 599, color: '#f59e0b' },
-  { name: 'Pioneer',    min: 600, max: Infinity, color: '#95fde2' },
-] as const
-
-export function getTier(points: number) {
-  return TIERS.find(t => points >= t.min && points <= t.max) ?? TIERS[0]
+export type AuditLog = {
+  id: string
+  actor_id: string | null
+  action_type: string
+  target_id: string | null
+  target_type: string
+  old_data: Record<string, any> | null
+  new_data: Record<string, any> | null
+  ip_address: string | null
+  user_agent: string | null
+  created_at: string
 }
 
-export function getTierProgress(points: number) {
-  const tier = getTier(points)
-  const nextTier = TIERS[TIERS.indexOf(tier) + 1]
-  if (!nextTier) return 100 // Pioneer — maxed out
-  const rangeSize = nextTier.min - tier.min
-  const progress = points - tier.min
-  return Math.round((progress / rangeSize) * 100)
+export type Quiz = {
+  id: string
+  title: string
+  quiz_type: 'placement' | 'dsa_sprint'
+  base_time_limit: number
+  pass_threshold: number
+  created_at: string
+}
+
+export type QuizQuestion = {
+  id: string
+  quiz_id: string
+  question_text: string
+  options: string[]
+  correct_option_index: number
+  time_limit_seconds: number | null
+  created_at: string
+}
+
+export type QuizSession = {
+  id: string
+  user_id: string
+  quiz_id: string
+  current_question_index: number
+  score: number
+  started_at: string
+  completed: boolean
+  created_at: string
 }

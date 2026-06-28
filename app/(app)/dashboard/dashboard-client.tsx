@@ -1,106 +1,68 @@
-'use client'
+"use client";
 
-import { useQuery } from '@tanstack/react-query'
-import { createClient } from '@/lib/supabase/client'
-import { logout } from '@/app/actions/auth'
-import { motion } from 'motion/react'
-import { AlertCircle, LogOut } from 'lucide-react'
+import { motion } from "framer-motion";
+import { RankWidget } from "@/components/dashboard/rank-widget";
+import { QuestBoard } from "@/components/dashboard/quest-board";
+import { Quest, Profile } from "@/lib/types";
+import { Sparkles } from "lucide-react";
+import LightRays from "@/components/LightRays";
 
-// Define the shape of our profile data
-type Profile = {
-  id: string
-  full_name: string
-  matric_number: string
-  total_points: number
-  verification_status: string
+interface DashboardClientProps {
+  profile: Profile;
+  activeQuests: Quest[];
 }
 
-export function DashboardClient({ initialProfile }: { initialProfile: Profile }) {
-  const supabase = createClient()
-
-  // React Query Hook for background polling and optimistic UI
-  const { data: profile } = useQuery({
-    queryKey: ['profile', initialProfile.id],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', initialProfile.id)
-        .single()
-      return data as Profile
-    },
-    initialData: initialProfile,
-  })
-
-  // Calculate Tier
-  const tier = profile.total_points >= 600 ? 'Pioneer' : 
-               profile.total_points >= 300 ? 'Innovator' : 
-               profile.total_points >= 100 ? 'Builder' : 'Explorer'
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
-    visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 24 } }
-  }
-
+export function DashboardClient({
+  profile,
+  activeQuests,
+}: DashboardClientProps) {
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8">
-      <motion.div initial="hidden" animate="visible" variants={containerVariants} className="flex items-center justify-between">
-        <motion.div variants={itemVariants}>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
-            Welcome back, {profile.full_name}
-          </h1>
-          <p className="text-muted-foreground mt-1 font-medium">Matric: {profile.matric_number}</p>
-        </motion.div>
-        
-        <motion.form variants={itemVariants} action={logout} className="hidden md:block">
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-card border border-border rounded-xl text-sm font-semibold hover:bg-card/80 hover:text-destructive transition-colors">
-            <LogOut className="w-4 h-4" />
-            Sign Out
-          </button>
-        </motion.form>
-      </motion.div>
+    <div className="w-full relative min-h-screen">
+      {/* Dynamic Light Rays Background spanning top area */}
+      <div className="absolute top-0 left-0 w-full h-[600px] overflow-hidden pointer-events-none z-0">
+        {/* <LightRays /> */}
+      </div>
 
-      {profile.verification_status !== 'verified' && (
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }} 
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-warning/10 border border-warning/20 p-5 rounded-2xl flex items-start gap-4"
+      <div className="w-full max-w-7xl mx-auto px-4 py-12 relative z-10">
+        {/* Header section over the light rays */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-12 text-center md:text-left"
         >
-          <AlertCircle className="w-6 h-6 text-warning shrink-0 mt-0.5" />
-          <div>
-            <h3 className="text-warning font-bold text-lg">Verification Pending</h3>
-            <p className="text-sm text-warning/80 mt-1">
-              Your biodata is currently being reviewed by our AI system. You cannot earn points or claim bounties until verified.
-            </p>
-          </div>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-foreground flex flex-col md:flex-row md:items-center gap-3 drop-shadow-2xl">
+            Welcome back,{" "}
+            <span className="text-gradient">
+              {profile.preferred_name || profile.full_name}
+            </span>
+          </h1>
         </motion.div>
-      )}
 
-      <motion.div initial="hidden" animate="visible" variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <motion.div variants={itemVariants} className="bg-card p-6 rounded-3xl border border-border relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <h3 className="text-sm font-bold text-muted-foreground mb-2">Total Points</h3>
-          <p className="text-5xl font-black text-brand tracking-tighter">{profile.total_points}</p>
-        </motion.div>
-        
-        <motion.div variants={itemVariants} className="bg-card p-6 rounded-3xl border border-border relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-br from-brand-light/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <h3 className="text-sm font-bold text-muted-foreground mb-2">Current Tier</h3>
-          <p className="text-3xl font-bold text-foreground">{tier}</p>
-          <div className="mt-4 w-full h-2 bg-input rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-brand rounded-full transition-all duration-1000" 
-              style={{ width: `${Math.min((profile.total_points % 100) / 100 * 100, 100)}%` }} 
-            />
+        {/* Main Dashboard Layout */}
+        <div className="flex flex-col lg:flex-row gap-8 w-full mt-8">
+          {/* Rank Display Area */}
+          <div className="w-full lg:w-1/3 xl:w-1/4 flex flex-col items-center">
+            {/* Desktop Lanyard (hidden on mobile) */}
+            <div className="hidden md:flex justify-center items-center w-full h-[600px]">
+              <RankWidget score={profile.total_points} />
+            </div>
+
+            {/* Mobile Rank Placeholder (hidden on desktop) */}
+            <div className="flex md:hidden justify-center items-center w-full h-40 bg-foreground/5 border border-border/50 rounded-2xl backdrop-blur-md">
+              <span className="text-muted-foreground font-mono text-sm">
+                Mobile Rank Display Placeholder
+              </span>
+            </div>
           </div>
-          <p className="text-xs text-muted-foreground mt-2 text-right">Next tier at {Math.ceil((profile.total_points + 1) / 100) * 100} pts</p>
-        </motion.div>
-      </motion.div>
+
+          {/* The rest of the dashboard UI placeholder */}
+          <div className="w-full lg:w-2/3 xl:w-3/4 min-h-[60vh] bg-foreground/5 border border-border/50 rounded-3xl backdrop-blur-md p-8 flex items-center justify-center">
+            <span className="text-muted-foreground font-mono">
+              Rest of dashboard UI placeholder
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }

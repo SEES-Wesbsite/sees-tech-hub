@@ -12,28 +12,30 @@ export async function completeOnboarding(formData: FormData) {
     redirect('/login')
   }
 
-  const track = formData.get('track') as string
-  const academicYear = formData.get('academicYear') as string
-  const githubUrl = formData.get('githubUrl') as string | null
-  const skillsRaw = formData.get('skills') as string | null
+  const preferredName = formData.get('preferredName') as string
+  const knownSkills = formData.get('knownSkills') as string | null
+  const learningSkills = formData.get('learningSkills') as string | null
+  const portfolioLink = formData.get('portfolioLink') as string | null
+  const socialLink = formData.get('socialLink') as string | null
 
-  if (!track || !academicYear) {
-    return { error: 'Track and academic year are required.' }
+  if (!preferredName) {
+    return { error: 'Preferred name is required.' }
   }
 
-  const skills = skillsRaw
-    ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean)
-    : null
+  const knownSkillsArr = knownSkills ? JSON.parse(knownSkills) : []
+  const learningSkillsArr = learningSkills ? JSON.parse(learningSkills) : []
 
   const { error } = await supabase
     .from('users')
-    .update({
-      track,
-      academic_year: academicYear,
-      github_url: githubUrl || null,
-      skills,
+    .upsert({
+      id: user.id,
+      full_name: user.user_metadata?.full_name || preferredName,
+      preferred_name: preferredName,
+      known_skills: knownSkillsArr,
+      learning_skills: learningSkillsArr,
+      portfolio_link: portfolioLink || null,
+      social_link: socialLink || null,
     })
-    .eq('id', user.id)
 
   if (error) {
     return { error: error.message }

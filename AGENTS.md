@@ -25,6 +25,9 @@
 1. **Path Consistency**: Ensure all navigation links match the established routing structure (e.g., `/agent/locations` instead of `/agent/submissions`).
 2. **State Scoping**: Always ensure data is strictly scoped to the authenticated user (`auth.uid()`) and specific regional/state visibility rules.
 
+## ✅ Quality Assurance
+1. **Type Checking**: YOU MUST ALWAYS run `npx tsc --noEmit` after making any change to a `.ts` or `.tsx` file to verify that you haven't introduced any TypeScript compilation errors. Do this proactively before declaring a task complete.
+
 ## Change Logging Policy
 - **Timeline log**: Whenever you make changes, YOU MUST ALWAYS append a brief, timestamped summary of your changes to `timeline-changes.md`.
 - **Format**: Keep them short, sequential, and permanent. Do NOT overwrite other lines in the file.
@@ -81,8 +84,9 @@ When the user mentions deferred work — phrases like "we can adjust later", "do
 4. **Applied via the Supabase CLI**: author the `.sql` file, then `supabase db push` against the linked project. The build/staging database **is** the linked project; **promoting to production = point the CLI at the prod project (swap env / `supabase link`) and `supabase db push` the same migration set.** Never hand-edit a remote schema outside a migration.
 
 ### Authoring rules
-1. **Forward-only, run-once**: Never edit a migration that has already been applied. Fix-forward with a new, higher-numbered migration. Files are not written to be idempotent — no `IF NOT EXISTS` on `CREATE TABLE` (a re-run should fail loudly, not silently skip). `CREATE OR REPLACE` is fine for functions; `CREATE EXTENSION IF NOT EXISTS` is fine since extensions may be pre-installed.
-2. **No explicit `BEGIN`/`COMMIT`**: The Supabase migration runner wraps each file in a single transaction, so a file already applies atomically (all-or-nothing). Keep files free of transaction-control statements.
+1. **Never run `supabase db push`**: The AI agent must NEVER attempt to run `supabase db push` or apply migrations automatically. Always create the `.sql` file and ask the USER to run it manually.
+2. **Forward-only, run-once**: Never edit a migration that has already been applied. Fix-forward with a new, higher-numbered migration. Files are not written to be idempotent — no `IF NOT EXISTS` on `CREATE TABLE` (a re-run should fail loudly, not silently skip). `CREATE OR REPLACE` is fine for functions; `CREATE EXTENSION IF NOT EXISTS` is fine since extensions may be pre-installed.
+3. **No explicit `BEGIN`/`COMMIT`**: The Supabase migration runner wraps each file in a single transaction, so a file already applies atomically (all-or-nothing). Keep files free of transaction-control statements.
 3. **Review data types relentlessly**: Confirm every column type before writing it, then confirm again. Wrong types at the data stage compound into corruption downstream.
 4. **Constraints are not optional**: Every table gets the right `NOT NULL`, `CHECK`, `UNIQUE`, and foreign-key constraints. Enforce invariants in the schema, not just in app code.
 5. **RLS + policies inline**: Enable RLS and define its `CREATE POLICY` statements in the **same** migration that creates the table. Default-deny; membership/role checks go through `SECURITY DEFINER` helper functions.

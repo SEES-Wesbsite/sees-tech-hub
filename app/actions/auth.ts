@@ -54,7 +54,6 @@ export async function signup(formData: FormData) {
     options: {
       data: {
         full_name: fullName,
-        matric_number: matric,
         contact_email: contactEmail,
       }
     }
@@ -74,7 +73,6 @@ export async function signup(formData: FormData) {
       .insert([
         {
           id: data.user.id,
-          matric_number: matric,
           full_name: fullName,
           contact_email: contactEmail,
         }

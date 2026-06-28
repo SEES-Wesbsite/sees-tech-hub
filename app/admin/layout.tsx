@@ -1,7 +1,18 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Shield, LayoutDashboard, CheckSquare, Link as LinkIcon, FilePlus, ArrowLeft } from 'lucide-react'
+import { Shield, LayoutDashboard, Link as LinkIcon, ArrowLeft, CalendarDays } from 'lucide-react'
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarHeader,
+  SidebarTrigger,
+} from '@/components/ui/sidebar'
 
 export default async function AdminLayout({
   children,
@@ -27,57 +38,85 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="flex h-screen bg-background overflow-hidden">
-      {/* Admin Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 border-r border-border bg-card/50 h-full">
-        <div className="p-6">
-          <div className="flex items-center gap-2 mb-6">
-            <Shield className="w-8 h-8 text-destructive" />
-            <span className="font-bold text-xl tracking-tight text-foreground">Admin Hub</span>
-          </div>
-          <Link href="/dashboard" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
-            <ArrowLeft className="w-4 h-4" /> Back to App
-          </Link>
-        </div>
+    <SidebarProvider>
+      <div className="flex h-screen bg-background overflow-hidden w-full">
+        {/* Admin Sidebar */}
+        <Sidebar className="hidden md:flex border-r border-border bg-card/50">
+          <SidebarHeader className="p-6">
+            <div className="flex items-center gap-2">
+              <Shield className="w-8 h-8 text-destructive" />
+              <span className="font-serif font-semibold text-xl tracking-tight text-foreground">Admin Hub</span>
+            </div>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarMenu className="gap-2 px-2">
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild className="mb-4">
+                    <Link href="/dashboard" className="text-muted-foreground hover:text-foreground">
+                      <ArrowLeft className="w-4 h-4 mr-2" /> Back to App
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <Link href="/admin/events" className="text-foreground font-medium">
+                      <CalendarDays className="w-5 h-5 mr-2" /> Events & Claims
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <Link href="/admin/quests" className="text-foreground font-medium">
+                      <LayoutDashboard className="w-5 h-5 mr-2" /> Quests & Bounties
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <Link href="/admin/links" className="text-foreground font-medium">
+                      <LinkIcon className="w-5 h-5 mr-2" /> Short Links
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroup>
+          </SidebarContent>
+        </Sidebar>
 
-        <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
-          <Link href="/admin/dashboard" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
-            <LayoutDashboard className="w-5 h-5" /> Analytics
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-y-auto pb-20 md:pb-0 relative w-full h-full">
+          <div className="h-full w-full">
+            <div className="hidden md:block p-4 absolute top-0 left-0 z-10">
+              <SidebarTrigger />
+            </div>
+            {children}
+          </div>
+        </main>
+
+        {/* Mobile Nav for Admins */}
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-border pb-safe flex items-center justify-around px-2 py-2">
+          <Link href="/admin/events" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
+            <CalendarDays className="w-5 h-5" />
+            <span className="text-[10px] font-medium mt-1">Events</span>
           </Link>
-          <Link href="/admin/submissions" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
-            <CheckSquare className="w-5 h-5" /> Submissions
+          <Link href="/admin/quests" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
+            <LayoutDashboard className="w-5 h-5" />
+            <span className="text-[10px] font-medium mt-1">Quests</span>
           </Link>
-          <Link href="/admin/links" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
-            <LinkIcon className="w-5 h-5" /> Short Links
+          <Link href="/admin/links" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
+            <LinkIcon className="w-5 h-5" />
+            <span className="text-[10px] font-medium mt-1">Links</span>
           </Link>
-          <Link href="/admin/content" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
-            <FilePlus className="w-5 h-5" /> Content Engine
+          <Link href="/dashboard" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-[10px] font-medium mt-1">Exit</span>
           </Link>
         </nav>
-      </aside>
-
-      {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto pb-20 md:pb-0">
-        <div className="h-full">
-          {children}
-        </div>
-      </main>
-
-      {/* Mobile Nav for Admins */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-border pb-safe flex items-center justify-around px-2 py-2">
-        <Link href="/admin/dashboard" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
-          <LayoutDashboard className="w-5 h-5" />
-          <span className="text-[10px] font-medium mt-1">Analytics</span>
-        </Link>
-        <Link href="/admin/submissions" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
-          <CheckSquare className="w-5 h-5" />
-          <span className="text-[10px] font-medium mt-1">Queue</span>
-        </Link>
-        <Link href="/dashboard" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="w-5 h-5" />
-          <span className="text-[10px] font-medium mt-1">Exit</span>
-        </Link>
-      </nav>
-    </div>
+      </div>
+    </SidebarProvider>
   )
 }
