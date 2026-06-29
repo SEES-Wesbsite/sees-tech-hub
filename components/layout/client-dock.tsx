@@ -7,7 +7,7 @@ import {
   Trophy,
   Target,
   Shield,
-  Settings,
+  User,
   Moon,
   Sun,
   CalendarDays,
@@ -58,10 +58,10 @@ export function ClientDock({ isAdmin }: { isAdmin: boolean }) {
     //   className: pathname.startsWith('/leaderboard') ? 'text-brand' : 'text-foreground/50'
     // },
     {
-      icon: <Settings className="w-5 h-5" />,
-      label: "Settings",
-      onClick: () => router.push("/settings"),
-      className: pathname.startsWith("/settings")
+      icon: <User className="w-5 h-5" />,
+      label: "Profile",
+      onClick: () => router.push("/profile"),
+      className: pathname.startsWith("/profile")
         ? "text-brand"
         : "text-foreground/50",
     },
