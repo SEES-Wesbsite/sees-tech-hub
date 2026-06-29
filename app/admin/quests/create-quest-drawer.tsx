@@ -148,7 +148,9 @@ export function CreateQuestDrawer({ quizzes }: { quizzes: Quiz[] }) {
 
               {/* Basic Details */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-lg border-b border-border pb-2">Basic Details</h4>
+                <h4 className="font-semibold text-lg border-b border-border pb-2">
+                  Basic Details
+                </h4>
                 <div className="space-y-2">
                   <Label htmlFor="title">Title</Label>
                   <Input
@@ -175,7 +177,9 @@ export function CreateQuestDrawer({ quizzes }: { quizzes: Quiz[] }) {
 
               {/* Gamification */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-lg border-b border-border pb-2">Gamification</h4>
+                <h4 className="font-semibold text-lg border-b border-border pb-2">
+                  Gamification
+                </h4>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="questType">Quest Type</Label>
@@ -188,7 +192,9 @@ export function CreateQuestDrawer({ quizzes }: { quizzes: Quiz[] }) {
                         <SelectItem value="project_build">
                           Project Build
                         </SelectItem>
-                        <SelectItem value="article_read">Article Read</SelectItem>
+                        <SelectItem value="article_read">
+                          Article Read
+                        </SelectItem>
                         <SelectItem value="quiz">Quiz</SelectItem>
                       </SelectContent>
                     </Select>
@@ -237,66 +243,64 @@ export function CreateQuestDrawer({ quizzes }: { quizzes: Quiz[] }) {
 
               {/* Resources */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-lg border-b border-border pb-2">Resources</h4>
+                <h4 className="font-semibold text-lg border-b border-border pb-2">
+                  Resources
+                </h4>
 
-              {questType === "quiz" ? (
-                <div className="space-y-2">
-                  <Label htmlFor="quizId">Linked Quiz</Label>
-                  <Select value={quizId} onValueChange={setQuizId}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a quiz" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {quizzes.map((q) => (
-                        <SelectItem key={q.id} value={q.id}>
-                          {q.title}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  <Label htmlFor="externalUrl">External URL</Label>
-                  <Input
-                    id="externalUrl"
-                    type="url"
-                    value={externalUrl}
-                  />
-                </div>
-              )}
+                {questType === "quiz" ? (
+                  <div className="space-y-2">
+                    <Label htmlFor="quizId">Linked Quiz</Label>
+                    <Select value={quizId} onValueChange={setQuizId}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a quiz" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {quizzes.map((q) => (
+                          <SelectItem key={q.id} value={q.id}>
+                            {q.title}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <Label htmlFor="externalUrl">External URL</Label>
+                    <Input id="externalUrl" type="url" value={externalUrl} />
+                  </div>
+                )}
               </div>
             </form>
-          </ScrollArea>
-          <DrawerFooter className="flex-row justify-between border-t border-border mt-auto pt-4">
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={handleClearDraft}
-              className="text-muted-foreground"
-            >
-              Clear Draft
-            </Button>
-            <div className="flex gap-2">
-              <DrawerClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DrawerClose>
+            <DrawerFooter className="flex-row justify-between border-t border-border mt-auto pt-4">
               <Button
-                type="submit"
-                form="create-quest-form"
-                disabled={isSubmitting}
+                type="button"
+                variant="ghost"
+                onClick={handleClearDraft}
+                className="text-muted-foreground"
               >
-                {isSubmitting ? (
-                  <>
-                    <Loader className="w-4 h-4 mr-2" variant="simple-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  "Create Quest"
-                )}
+                Clear Draft
               </Button>
-            </div>
-          </DrawerFooter>
+              <div className="flex gap-2">
+                <DrawerClose asChild>
+                  <Button variant="outline">Cancel</Button>
+                </DrawerClose>
+                <Button
+                  type="submit"
+                  form="create-quest-form"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader className="w-4 h-4 mr-2" variant="simple-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    "Create Quest"
+                  )}
+                </Button>
+              </div>
+            </DrawerFooter>
+          </ScrollArea>
         </div>
       </DrawerContent>
     </Drawer>

@@ -129,8 +129,8 @@ export function EditEventDrawer({
   };
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange} direction="right">
-      <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-full md:w-[600px] rounded-none">
+    <Drawer open={open} onOpenChange={onOpenChange}>
+      <DrawerContent className="w-full md:w-[600px] right-0 left-auto h-screen top-0 mt-0 rounded-none data-[vaul-drawer-direction=bottom]:h-auto data-[vaul-drawer-direction=bottom]:max-h-[85vh] data-[vaul-drawer-direction=bottom]:rounded-t-xl data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:inset-x-0">
         <ScrollArea className="h-full overflow-y-auto scrollbar-hide">
           <div className="p-6">
             <DrawerHeader className="px-0 pt-0 text-left">
@@ -190,7 +190,9 @@ export function EditEventDrawer({
             >
               {/* --- Basic Details --- */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-lg border-b border-border pb-2">Basic Details</h4>
+                <h4 className="font-semibold text-lg border-b border-border pb-2">
+                  Basic Details
+                </h4>
                 <div className="space-y-2">
                   <Label>Title</Label>
                   <Input
@@ -239,9 +241,11 @@ export function EditEventDrawer({
 
               {/* --- Scheduling & Location --- */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-lg border-b border-border pb-2">Scheduling & Location</h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <h4 className="font-semibold text-lg border-b border-border pb-2">
+                  Scheduling & Location
+                </h4>
+
+                <div className="grid grid-cols-1 gap-4">
                   <div className="space-y-2">
                     <Label>Event Date</Label>
                     <DateTimePicker
@@ -258,7 +262,7 @@ export function EditEventDrawer({
                     />
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label>Online Link (Optional)</Label>
                   <Input
@@ -271,7 +275,9 @@ export function EditEventDrawer({
 
               {/* --- Gamification --- */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-lg border-b border-border pb-2">Gamification</h4>
+                <h4 className="font-semibold text-lg border-b border-border pb-2">
+                  Gamification
+                </h4>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Points Awarded</Label>
