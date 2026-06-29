@@ -87,7 +87,7 @@ export function Question({
           <div className="absolute top-0 right-0 px-3 py-1 bg-white/10 text-xs font-mono text-white/50 rounded-bl-lg">
             {language}
           </div>
-          <pre className="text-sm font-mono text-blue-300 overflow-x-auto whitespace-pre-wrap leading-loose">
+          <pre className="text-sm font-mono text-brand overflow-x-auto whitespace-pre-wrap leading-loose">
             <code>{codeSnippet}</code>
           </pre>
         </div>

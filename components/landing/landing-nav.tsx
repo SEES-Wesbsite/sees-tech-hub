@@ -21,7 +21,7 @@ export function LandingNav() {
       <div className="flex items-center gap-6">
         <Link
           href="#"
-          className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors"
+          className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors hidden md:block"
         >
           WhatsApp Community
         </Link>

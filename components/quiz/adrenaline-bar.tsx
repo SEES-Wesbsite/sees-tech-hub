@@ -31,7 +31,7 @@ export function AdrenalineBar({ totalTime, timeRemaining, isPaused = false }: Ad
       {/* Critical Pulse Effect */}
       {isCritical && !isPaused && (
         <motion.div
-          className="absolute top-0 left-0 h-full bg-red-500 rounded-full"
+          className="absolute top-0 left-0 h-full bg-destructive rounded-full"
           initial={{ opacity: 0, width: `${percentage}%` }}
           animate={{ opacity: [0, 0.5, 0], width: `${percentage}%` }}
           transition={{ duration: 0.5, repeat: Infinity }}
