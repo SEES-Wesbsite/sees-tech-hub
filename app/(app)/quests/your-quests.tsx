@@ -10,6 +10,7 @@ import { startQuestQuiz, generateMyWeeklyQuests } from "@/app/actions/user-quest
 import { CompletedQuests } from "./completed-quests";
 import { StudyDrawer } from "@/components/quiz/study-drawer";
 import { toast } from "sonner";
+import { Loader } from "@/components/ui/loader";
 
 interface YourQuestsProps {
   assignments: any[];
@@ -114,9 +115,15 @@ export function YourQuests({ assignments, allCompletedAssignments }: YourQuestsP
           <Button
             onClick={handleGenerateQuests}
             disabled={generating}
-            className="rounded-full px-8 bg-brand hover:bg-brand-light text-brand-foreground"
+            className="rounded-full px-8 bg-brand hover:bg-brand-light text-brand-foreground w-[260px]"
           >
-            {generating ? "Running Engine..." : "Generate My Weekly 3"}
+            {generating ? (
+              <span className="flex items-center gap-2">
+                <Loader variant="simple-spin" className="w-4 h-4" /> Generating...
+              </span>
+            ) : (
+              "Generate My Weekly 3"
+            )}
           </Button>
         </div>
       ) : (
