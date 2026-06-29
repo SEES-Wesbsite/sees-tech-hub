@@ -40,6 +40,7 @@ export async function proxy(request: NextRequest) {
                            request.nextUrl.pathname.startsWith('/u/')
   
   const isOnboardingRoute = request.nextUrl.pathname.startsWith('/onboarding')
+  const isLandingPage = request.nextUrl.pathname === '/'
 
   if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone()
@@ -62,8 +63,8 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // Redirect logged-in users away from auth pages to their dashboard
-  if (user && isAuthPage) {
+  // Redirect logged-in users away from auth pages or landing page to their dashboard
+  if (user && (isAuthPage || isLandingPage)) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
