@@ -52,7 +52,7 @@ export default async function AdminEventsPage() {
   return (
     <div className="p-6 md:p-8 max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="mb-8">
-        <h1 className="text-3xl font-serif font-bold text-foreground">Events Engine</h1>
+        <h1 className="text-3xl font-serif font-bold text-foreground">Events Management</h1>
         <p className="text-muted-foreground mt-2">Create live events, set claim codes, and manage point distributions.</p>
       </div>
 

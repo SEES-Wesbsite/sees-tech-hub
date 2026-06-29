@@ -58,7 +58,7 @@ export function AssignmentsClient({
   const [loadingUser, setLoadingUser] = useState<string | null>(null);
 
   const handleBulkGenerate = async () => {
-    if (!confirm("This will run the Recommendation Engine for ALL users. Proceed?")) return;
+    if (!confirm("This will run the Recommendation System for ALL users. Proceed?")) return;
     setIsBulkLoading(true);
     await bulkGenerateWeeklyAssignments(targetWeekStart);
     setIsBulkLoading(false);
@@ -84,7 +84,7 @@ export function AssignmentsClient({
             Weekly Assignments
           </h1>
           <p className="text-muted-foreground mt-1">
-            Recommendation Engine for the week of <span className="font-semibold text-foreground">{targetWeekStart}</span>
+            Recommendation System for the week of <span className="font-semibold text-foreground">{targetWeekStart}</span>
           </p>
         </motion.div>
 
@@ -94,7 +94,7 @@ export function AssignmentsClient({
           className="gap-2 shadow-xl shadow-brand/20"
         >
           {isBulkLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-          Run Engine For All
+          Run System For All
         </Button>
       </div>
 

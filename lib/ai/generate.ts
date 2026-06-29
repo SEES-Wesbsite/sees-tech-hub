@@ -25,7 +25,7 @@ export async function generateWithAi(prompt: string, options?: GenerateOptions):
       return await callGemini(prompt, options);
     }
   } catch (error) {
-    console.warn(`[AI Engine] ${provider} failed. Attempting fallback...`, error);
+    console.warn(`[AI Generator] ${provider} failed. Attempting fallback...`, error);
     try {
       if (provider === "groq") {
         return await callGemini(prompt, options);
@@ -33,7 +33,7 @@ export async function generateWithAi(prompt: string, options?: GenerateOptions):
         return await callGroq(prompt, options);
       }
     } catch (fallbackError) {
-      console.error(`[AI Engine] Both providers failed!`, fallbackError);
+      console.error(`[AI Generator] Both providers failed!`, fallbackError);
       throw new Error("AI Generation completely failed.");
     }
   }

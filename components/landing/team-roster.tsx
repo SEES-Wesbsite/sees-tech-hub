@@ -57,7 +57,7 @@ export function TeamRoster() {
           <p className="text-slate-600 mb-6 font-medium">Think you have what it takes to build the Hub?</p>
           <a href="#" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-300 text-slate-800 font-bold hover:bg-slate-100 transition-colors">
             <Users className="w-4 h-4" />
-            Apply to Join Core
+            Apply to Join the Team
           </a>
         </div>
       </div>

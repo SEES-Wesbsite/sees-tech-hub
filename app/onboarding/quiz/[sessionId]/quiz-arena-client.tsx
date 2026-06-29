@@ -295,7 +295,7 @@ export function QuizArenaClient({ sessionId, userName, initialState }: QuizArena
         />
       </div>
 
-      {/* The Question Engine */}
+      {/* The Question Loader */}
       <AnimatePresence mode="wait">
         <motion.div key={question.id} className="w-full">
           <Question 

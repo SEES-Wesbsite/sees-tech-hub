@@ -28,7 +28,7 @@ function getDifficultyDistance(userRank: string, questDiff: string): number {
 }
 
 /**
- * Runs the Recommendation Engine for a specific user.
+ * Runs the Recommendation System for a specific user.
  * Assigns exactly 3 quests for the upcoming week based on their skills and rank.
  */
 export async function generateWeeklyAssignments(targetUserId: string, targetWeekStart: string) {
@@ -136,7 +136,7 @@ export async function generateWeeklyAssignments(targetUserId: string, targetWeek
 }
 
 /**
- * Bulk runs the Recommendation Engine for all users.
+ * Bulk runs the Recommendation System for all users.
  */
 export async function bulkGenerateWeeklyAssignments(targetWeekStart: string) {
   const supabase = await createClient()
