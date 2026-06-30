@@ -27,8 +27,8 @@ export default async function DashboardPage() {
     .single();
 
   if (profileError || !profile) {
-    // If somehow no profile, redirect to login
-    redirect("/login");
+    // If no profile, they are a new user who bypassed middleware somehow
+    redirect("/onboarding");
   }
 
   if (profile.onboarding_status !== "completed") {

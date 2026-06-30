@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -56,7 +56,7 @@ export async function proxy(request: NextRequest) {
       .eq('id', user.id)
       .single();
 
-    if (profile && profile.onboarding_status !== 'completed') {
+    if (!profile || profile.onboarding_status !== 'completed') {
       const url = request.nextUrl.clone()
       url.pathname = '/onboarding'
       return NextResponse.redirect(url)
