@@ -18,9 +18,13 @@ export default async function AppLayout({
 
   const { data: profile } = await supabase
     .from("users")
-    .select("role")
+    .select("role, onboarding_status")
     .eq("id", user.id)
     .single();
+
+  if (!profile || profile.onboarding_status !== "completed") {
+    redirect("/onboarding");
+  }
 
   const isAdmin = profile?.role === "admin";
 

@@ -27,13 +27,9 @@ export default async function DashboardPage() {
     .single();
 
   if (profileError || !profile) {
-    // If no profile, they are a new user who bypassed middleware somehow
-    redirect("/onboarding");
-  }
-
-  if (profile.onboarding_status !== "completed") {
-    // Failsafe redirect if they bypass middleware
-    redirect("/onboarding");
+    // Layout handles redirecting to onboarding if profile is missing,
+    // but Next.js parallel fetching means we just throw or return null here
+    throw new Error("Profile not found");
   }
 
   // 3. Fetch Active Quests
