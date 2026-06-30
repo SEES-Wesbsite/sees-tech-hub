@@ -75,13 +75,32 @@ export type Project = {
   created_at: string
 }
 
-export type Job = {
+export type Opportunity = {
   id: string
   title: string
-  company: string
+  organization: string
   description: string
-  apply_url: string
-  is_active: boolean
+  summary: string
+  application_url: string
+  opportunity_type: 'job' | 'internship' | 'hackathon' | 'scholarship' | 'fellowship' | 'grant' | 'competition' | 'bootcamp' | 'event' | 'other'
+  location_type: 'remote' | 'onsite' | 'hybrid' | 'unspecified'
+  location: string | null
+  compensation: string | null
+  deadline: string | null
+  status: 'draft' | 'pending_review' | 'approved' | 'rejected' | 'archived'
+  featured: boolean
+  tags: string[]
+  created_by: string | null
+  published_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type OpportunityInteraction = {
+  id: string
+  opportunity_id: string
+  user_id: string
+  interaction_type: 'view' | 'save' | 'click_apply'
   created_at: string
 }
 

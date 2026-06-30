@@ -11,6 +11,7 @@ import {
   Moon,
   Sun,
   CalendarDays,
+  Briefcase,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
@@ -51,20 +52,28 @@ export function ClientDock({ isAdmin }: { isAdmin: boolean }) {
         ? "text-brand"
         : "text-foreground/50",
     },
+    {
+      icon: <Briefcase className="w-5 h-5" />,
+      label: "Opportunities",
+      onClick: () => router.push("/opportunities"),
+      className: pathname.startsWith("/opportunities")
+        ? "text-brand"
+        : "text-foreground/50",
+    },
     // {
     //   icon: <Trophy className="w-5 h-5" />,
     //   label: 'Leaderboard',
     //   onClick: () => router.push('/leaderboard'),
     //   className: pathname.startsWith('/leaderboard') ? 'text-brand' : 'text-foreground/50'
     // },
-    {
-      icon: <User className="w-5 h-5" />,
-      label: "Profile",
-      onClick: () => router.push("/profile"),
-      className: pathname.startsWith("/profile")
-        ? "text-brand"
-        : "text-foreground/50",
-    },
+    // {
+    //   icon: <User className="w-5 h-5" />,
+    //   label: "Profile",
+    //   onClick: () => router.push("/profile"),
+    //   className: pathname.startsWith("/profile")
+    //     ? "text-brand"
+    //     : "text-foreground/50",
+    // },
     {
       icon:
         theme === "dark" ? (
