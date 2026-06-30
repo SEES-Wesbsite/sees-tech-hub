@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Shield, LayoutDashboard, Link as LinkIcon, ArrowLeft, CalendarDays } from 'lucide-react'
+import { Shield, LayoutDashboard, Link as LinkIcon, ArrowLeft, CalendarDays, Briefcase } from 'lucide-react'
 import {
   SidebarProvider,
   Sidebar,
@@ -82,6 +82,13 @@ export default async function AdminLayout({
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <Link href="/admin/opportunities" className="text-foreground font-medium">
+                      <Briefcase className="w-5 h-5 mr-2" /> Opportunities
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroup>
           </SidebarContent>
@@ -110,6 +117,10 @@ export default async function AdminLayout({
           <Link href="/admin/links" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
             <LinkIcon className="w-5 h-5" />
             <span className="text-[10px] font-medium mt-1">Links</span>
+          </Link>
+          <Link href="/admin/opportunities" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
+            <Briefcase className="w-5 h-5" />
+            <span className="text-[10px] font-medium mt-1">Jobs</span>
           </Link>
           <Link href="/dashboard" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
             <ArrowLeft className="w-5 h-5" />
