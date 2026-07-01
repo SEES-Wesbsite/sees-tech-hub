@@ -106,112 +106,95 @@ export function QuestsClient({
         </div>
       </div>
 
-      <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-        <Table>
-          <TableHeader className="bg-muted/30">
-            <TableRow>
-              <TableHead>Quest</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Difficulty</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {initialQuests.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                  No quests found in the bank.
-                </TableCell>
-              </TableRow>
-            ) : (
-              initialQuests.map((quest) => (
-                <TableRow key={quest.id} className="hover:bg-muted/10">
-                  <TableCell>
-                    <div className="font-medium text-foreground">{quest.title}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">
-                      {quest.point_value} XP
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="bg-brand/10 text-brand border-brand/20">
-                      {quest.quest_type.replace("_", " ")}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <span className="font-serif font-bold text-foreground">
-                      {quest.difficulty}-Rank
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant="secondary"
-                      className={
-                        quest.status === "active"
-                          ? "bg-success/10 text-success"
-                          : quest.status === "draft"
-                          ? "bg-warning/10 text-warning"
-                          : "bg-destructive/10 text-destructive"
-                      }
-                    >
-                      {quest.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
+      <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden flex flex-col divide-y divide-border/50">
+        {initialQuests.length === 0 ? (
+          <div className="px-6 py-12 text-center text-muted-foreground font-medium">
+            No quests found in the bank.
+          </div>
+        ) : (
+          initialQuests.map((quest) => (
+            <div key={quest.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 md:p-6 hover:bg-muted/10 transition-colors gap-4">
+              <div className="flex flex-col min-w-0">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                  <span className="font-medium text-foreground text-base">
+                    {quest.title}
+                  </span>
+                  <Badge variant="outline" className="bg-brand/10 text-brand border-brand/20">
+                    {quest.quest_type.replace("_", " ")}
+                  </Badge>
+                  <span className="font-serif font-bold text-foreground text-sm border-l pl-2 border-border/50">
+                    {quest.difficulty}-Rank
+                  </span>
+                </div>
+                <div className="text-sm text-muted-foreground flex items-center gap-2 mt-1">
+                  <Badge
+                    variant="secondary"
+                    className={
+                      quest.status === "active"
+                        ? "bg-success/10 text-success"
+                        : quest.status === "draft"
+                        ? "bg-warning/10 text-warning"
+                        : "bg-destructive/10 text-destructive"
+                    }
+                  >
+                    {quest.status}
+                  </Badge>
+                  <span>•</span>
+                  <span>{quest.point_value} XP</span>
+                </div>
+              </div>
+              
+              <div className="flex justify-end gap-2 shrink-0">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleEditClick(quest)}
+                  title="Edit"
+                >
+                  <Edit2 className="w-4 h-4" />
+                </Button>
+                {quest.status !== "archived" ? (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
                       <Button
-                        variant="ghost"
+                        variant="outline"
                         size="icon"
-                        onClick={() => handleEditClick(quest)}
-                        title="Edit"
+                        title="Archive"
+                        className="hover:text-destructive hover:bg-destructive/10 hover:border-destructive/30"
                       >
-                        <Edit2 className="w-4 h-4" />
+                        <Archive className="w-4 h-4" />
                       </Button>
-                      {quest.status !== "archived" ? (
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              title="Archive"
-                              className="hover:text-destructive hover:bg-destructive/10"
-                            >
-                              <Archive className="w-4 h-4" />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Archive this quest?</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This will archive "{quest.title}". It will no longer be assignable to users.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleArchive(quest.id)} className="bg-destructive hover:bg-destructive/90 text-white">
-                                Archive
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      ) : (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleUnarchive(quest.id)}
-                          title="Unarchive"
-                          className="hover:text-success hover:bg-success/10"
-                        >
-                          <ArchiveRestore className="w-4 h-4" />
-                        </Button>
-                      )}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Archive this quest?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This will archive "{quest.title}". It will no longer be assignable to users.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => handleArchive(quest.id)} className="bg-destructive hover:bg-destructive/90 text-white">
+                          Archive
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleUnarchive(quest.id)}
+                    title="Unarchive"
+                    className="hover:text-success hover:bg-success/10 hover:border-success/30"
+                  >
+                    <ArchiveRestore className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       <EditQuestDrawer
