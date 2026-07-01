@@ -50,7 +50,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col selection:bg-brand selection:text-[#95fde2]">
         <Providers>
           {children}
-          <Toaster theme="dark" position="top-center" richColors />
+          <Toaster theme="dark" position="top-center" richColors toastOptions={{ style: { fontFamily: 'var(--font-sans)' } }} />
         </Providers>
         <script
           type="application/ld+json"
