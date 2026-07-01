@@ -82,7 +82,8 @@ export default function GlobalErrorBoundary({
                 reset();
                 router.push('/dashboard');
               }}
-              className="flex-1 bg-brand hover:bg-brand-light text-brand-foreground rounded-xl h-12"
+              variant="default"
+              className="flex-1 rounded-xl h-12"
             >
               <Home className="w-4 h-4 mr-2" />
               Go to Dashboard

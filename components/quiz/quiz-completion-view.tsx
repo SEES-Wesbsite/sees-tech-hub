@@ -88,7 +88,7 @@ export function QuizCompletionView({
         transition={{ delay: 0.4 }}
         className="text-4xl md:text-5xl font-serif font-bold mb-2"
       >
-        Run Complete!
+        Quiz Completed!
       </motion.h1>
       
       <motion.p
@@ -97,7 +97,7 @@ export function QuizCompletionView({
         transition={{ delay: 0.5 }}
         className="text-xl text-white/70 mb-8"
       >
-        You survived the Arena, {userName}.
+        You have finished the quiz, {userName}.
       </motion.p>
 
       <motion.div
@@ -123,7 +123,7 @@ export function QuizCompletionView({
               Final Rank
             </div>
             <div className="text-4xl font-black font-serif text-brand-light">
-              {rankLetter}-Rank
+              {rankLetter} Rank
             </div>
             <div className="text-xs text-brand-light/70 mt-1 uppercase tracking-wider font-bold">
               {title}

@@ -115,7 +115,8 @@ export function YourQuests({ assignments, allCompletedAssignments }: YourQuestsP
           <Button
             onClick={handleGenerateQuests}
             disabled={generating}
-            className="rounded-full px-8 bg-brand hover:bg-brand-light text-brand-foreground w-[260px]"
+            variant="default"
+            className="rounded-full px-8 w-[260px]"
           >
             {generating ? (
               <span className="flex items-center gap-2">

@@ -8,7 +8,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { MapPin, Clock, ExternalLink, Bookmark, BookmarkCheck } from 'lucide-react'
 import Link from 'next/link'
 import { trackInteraction, removeSave } from '@/app/actions/user-opportunities'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { RecommendedCarousel } from './recommended-carousel'
 
 interface Props {
@@ -21,16 +21,13 @@ const CATEGORIES = ['All', 'hackathon', 'internship', 'job', 'scholarship', 'eve
 
 export function OpportunitiesFeedClient({ initialOpportunities, initialSavedIds, recommendations = [] }: Props) {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set(initialSavedIds))
   const [mounted, setMounted] = useState(false)
+  const [activeCategory, setActiveCategory] = useState('All')
 
   useEffect(() => {
     setMounted(true)
   }, [])
-
-  // State driven by URL
-  const activeCategory = searchParams.get('type') || 'All'
 
   const filteredOpportunities = useMemo(() => {
     let filtered = initialOpportunities
@@ -41,13 +38,7 @@ export function OpportunitiesFeedClient({ initialOpportunities, initialSavedIds,
   }, [initialOpportunities, activeCategory])
 
   const setCategory = (category: string) => {
-    const params = new URLSearchParams(searchParams.toString())
-    if (category === 'All') {
-      params.delete('type')
-    } else {
-      params.set('type', category)
-    }
-    router.replace(`?${params.toString()}`)
+    setActiveCategory(category)
   }
 
   const toggleSave = async (oppId: string, e: React.MouseEvent) => {
