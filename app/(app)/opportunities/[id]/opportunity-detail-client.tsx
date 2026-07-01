@@ -6,11 +6,11 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Bookmark, BookmarkCheck, ExternalLink, MapPin, Clock, Briefcase, Share2, ArrowLeft } from 'lucide-react'
 import { trackInteraction, removeSave } from '@/app/actions/user-opportunities'
-import { captureAndShare } from '@/lib/utils/share'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-
+import { toast } from 'sonner'
 interface Props {
   opportunity: Opportunity
   initialIsSaved: boolean
@@ -52,11 +52,19 @@ export function OpportunityDetailClient({ opportunity, initialIsSaved }: Props) 
   const handleShare = async () => {
     setIsSharing(true)
     try {
-      await captureAndShare(
-        shareCardRef.current,
-        `SEES-Opportunity-${opportunity.title.replace(/\s+/g, '-').substring(0, 30)}.png`,
-        opportunity.title
-      )
+      if (navigator.share) {
+        await navigator.share({
+          title: opportunity.title,
+          text: `Check out this opportunity: ${opportunity.title}`,
+          url: window.location.href,
+        })
+      } else {
+        await navigator.clipboard.writeText(window.location.href)
+        toast.success("Link copied to clipboard!")
+      }
+    } catch (e) {
+      // Ignore abort errors from native share
+      console.error(e)
     } finally {
       setIsSharing(false)
     }
@@ -132,9 +140,8 @@ export function OpportunityDetailClient({ opportunity, initialIsSaved }: Props) 
               )}
             </div>
           </div>
-
-          <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none prose-headings:font-serif prose-a:text-brand">
-            <ReactMarkdown>
+          <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none prose-headings:font-serif prose-a:text-brand prose-pre:bg-muted prose-pre:text-foreground prose-strong:text-foreground">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {opportunity.description}
             </ReactMarkdown>
           </div>
@@ -152,12 +159,15 @@ export function OpportunityDetailClient({ opportunity, initialIsSaved }: Props) 
         </div>
 
         {/* Sidebar Action Card */}
-        <div className="w-full md:w-80 shrink-0">
-          <div className="sticky top-24 bg-card border border-border rounded-xl p-6 shadow-sm space-y-6">
-            <div>
-              <h3 className="font-serif font-bold text-xl mb-2">Ready to apply?</h3>
+        <div className="w-full lg:w-80 shrink-0">
+          <div className="sticky top-24 bg-gradient-to-b from-brand/10 to-transparent border border-brand/20 rounded-2xl p-6 shadow-lg shadow-brand/5 space-y-6">
+            <div className="text-center">
+              <div className="w-12 h-12 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Briefcase className="w-6 h-6 text-brand" />
+              </div>
+              <h3 className="font-serif font-bold text-xl mb-2 text-foreground">Ready to apply?</h3>
               <p className="text-sm text-muted-foreground">
-                Make sure your profile and resume are updated before applying.
+                Make sure your profile and resume are updated before submitting your application.
               </p>
             </div>
 
@@ -179,23 +189,23 @@ export function OpportunityDetailClient({ opportunity, initialIsSaved }: Props) 
                 </a>
               </Button>
               
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full">
                 <Button 
                   variant={isSaved ? "secondary" : "outline"} 
-                  className="w-full"
+                  className="flex-1"
                   onClick={toggleSave}
                 >
                   {isSaved ? (
                     <><BookmarkCheck className="w-4 h-4 mr-2 text-brand" /> Saved</>
                   ) : (
-                    <><Bookmark className="w-4 h-4 mr-2" /> Save for later</>
+                    <><Bookmark className="w-4 h-4 mr-2" /> Save</>
                   )}
                 </Button>
                 
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="shrink-0" 
+                  className="shrink-0 w-10 h-10" 
                   onClick={handleShare}
                   disabled={isSharing}
                 >

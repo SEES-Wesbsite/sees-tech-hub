@@ -36,9 +36,9 @@ export async function createQuest(formData: FormData) {
       quest_type: formData.get('questType'),
       difficulty: formData.get('difficulty'),
       point_value: formData.get('pointValue'),
-      tags: formData.get('tags'),
-      external_url: formData.get('externalUrl'),
-      quiz_id: formData.get('quizId'),
+      tags: formData.get('tags') || '',
+      external_url: formData.get('externalUrl') || '',
+      quiz_id: formData.get('quizId') || '',
     })
     
     // Cleanup empty strings to nulls for DB
@@ -83,9 +83,9 @@ export async function updateQuest(id: string, formData: FormData) {
       quest_type: formData.get('questType'),
       difficulty: formData.get('difficulty'),
       point_value: formData.get('pointValue'),
-      tags: formData.get('tags'),
-      external_url: formData.get('externalUrl'),
-      quiz_id: formData.get('quizId'),
+      tags: formData.get('tags') || '',
+      external_url: formData.get('externalUrl') || '',
+      quiz_id: formData.get('quizId') || '',
     })
     
     const external_url = validatedData.external_url || null
