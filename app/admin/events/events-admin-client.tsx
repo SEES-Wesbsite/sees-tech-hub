@@ -52,7 +52,21 @@ export function EventsAdminClient({ initialEvents }: EventsAdminClientProps) {
   return (
     <div className="space-y-6">
       {/* Top Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center justify-between md:justify-center gap-3">
+          <div className="relative">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Search events..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 bg-foreground/5 border-border rounded-xl w-full sm:w-64"
+            />
+          </div>
+          <Button onClick={() => setCreateOpen(true)} variant="default">
+            <Plus className="w-4 h-4" /> New Event
+          </Button>
+        </div>
         <div className="flex items-center gap-3 bg-foreground/5 p-1 rounded-xl w-fit">
           {["ALL", "upcoming", "live", "completed"].map((status) => (
             <button
@@ -69,21 +83,6 @@ export function EventsAdminClient({ initialEvents }: EventsAdminClientProps) {
                 : status.charAt(0).toUpperCase() + status.slice(1)}
             </button>
           ))}
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search events..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 bg-foreground/5 border-border rounded-xl w-full sm:w-64"
-            />
-          </div>
-          <Button onClick={() => setCreateOpen(true)} variant="default">
-            <Plus className="w-4 h-4" /> New Event
-          </Button>
         </div>
       </div>
 

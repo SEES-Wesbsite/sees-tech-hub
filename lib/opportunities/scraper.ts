@@ -99,7 +99,7 @@ function generateQueries(count: number): string[] {
 /**
  * Core autonomous scraper pipeline.
  */
-export async function scrapeAndInsertOpportunities(): Promise<{ processed: number; items: any[] }> {
+export async function scrapeAndInsertOpportunities(queryCount = 8): Promise<{ processed: number; items: any[] }> {
   const supabase = await createAdminClient()
   const SERPAPI_KEY = process.env.SERPAPI_KEY
 
@@ -108,8 +108,8 @@ export async function scrapeAndInsertOpportunities(): Promise<{ processed: numbe
     return { processed: 0, items: [] }
   }
 
-  // 1. Generate 8 targeted boolean queries (for a 250/mo limit on SerpAPI = ~8/day)
-  const queries = generateQueries(8)
+  // 1. Generate targeted boolean queries
+  const queries = generateQueries(queryCount)
   const allUrls = new Set<string>()
 
   console.log(`Running ${queries.length} search queries...`)
