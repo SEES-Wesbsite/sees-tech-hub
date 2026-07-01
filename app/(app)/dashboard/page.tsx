@@ -32,19 +32,42 @@ export default async function DashboardPage() {
     throw new Error("Profile not found");
   }
 
-  // 3. Fetch Active Quests
-  const { data: activeQuests, error: questsError } = await supabase
-    .from("quest_bank")
-    .select("*")
-    .eq("status", "active")
-    .order("created_at", { ascending: false });
-
-  // 4. (Future) Fetch recent activity or leaderboard data here
-  // const { data: recentActivity } = ...
+  // 3. Fetch all other data concurrently for performance
+  const [
+    { data: activeQuests },
+    { count: questsCompleted },
+    { count: eventsRSVPd },
+    { data: leaderboard },
+    { data: recommendedOpportunities },
+    { data: upcomingEvents }
+  ] = await Promise.all([
+    // Active Quests
+    supabase.from("quest_bank").select("*").eq("status", "active").order("created_at", { ascending: false }),
+    // KPI: Quests Completed
+    supabase.from("quest_completions").select("*", { count: "exact", head: true }).eq("user_id", user.id).eq("status", "approved"),
+    // KPI: Events RSVP'd
+    supabase.from("event_rsvps").select("*", { count: "exact", head: true }).eq("user_id", user.id),
+    // Leaderboard (Top 10)
+    supabase.from("users").select("id, full_name, preferred_name, avatar_url, total_points").order("total_points", { ascending: false }).limit(10),
+    // Recommended Opportunities (approved only, latest 5)
+    supabase.from("opportunities").select("*").eq("status", "approved").order("created_at", { ascending: false }).limit(5),
+    // Upcoming Events (latest 5)
+    supabase.from("events").select("*").gte("start_time", new Date().toISOString()).order("start_time", { ascending: true }).limit(5)
+  ]);
 
   return (
     <div className="min-h-screen relative">
-      <DashboardClient profile={profile} activeQuests={activeQuests || []} />
+      <DashboardClient 
+        profile={profile} 
+        activeQuests={activeQuests || []} 
+        kpis={{
+          questsCompleted: questsCompleted || 0,
+          eventsRSVPd: eventsRSVPd || 0
+        }}
+        leaderboard={leaderboard || []}
+        recommendedOpportunities={recommendedOpportunities || []}
+        upcomingEvents={upcomingEvents || []}
+      />
     </div>
   );
 }
