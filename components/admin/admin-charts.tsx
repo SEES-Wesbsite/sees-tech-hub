@@ -16,8 +16,8 @@ interface AdminSignupsChartProps {
 
 export function AdminSignupsChart({ data }: AdminSignupsChartProps) {
   return (
-    <div className="w-full h-[300px]">
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="w-full min-h-[300px]">
+      <ResponsiveContainer width="100%" height={300} minHeight={300}>
         <BarChart
           data={data}
           margin={{

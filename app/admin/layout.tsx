@@ -104,11 +104,13 @@ export default async function AdminLayout({
 
         {/* Main Content Area */}
         <main className="flex-1 overflow-y-auto pb-20 md:pb-0 relative w-full h-full">
-          <div className="h-full w-full">
-            <div className="hidden md:block p-4 absolute top-0 left-0 z-10">
+          <div className="h-full w-full p-4 md:p-8 pt-12 md:pt-8 relative">
+            <div className="hidden md:block absolute top-4 left-4 z-10">
               <SidebarTrigger />
             </div>
-            {children}
+            <div className="md:pl-12">
+              {children}
+            </div>
           </div>
         </main>
 
