@@ -8,13 +8,11 @@ BEGIN
     INSERT INTO public.users (
         id, 
         full_name, 
-        contact_email, 
         onboarding_status
     )
     VALUES (
         NEW.id,
         COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name', 'New User'),
-        NEW.email,
         'pending'
     );
     RETURN NEW;
