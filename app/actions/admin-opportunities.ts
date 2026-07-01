@@ -188,8 +188,9 @@ export async function triggerScraper() {
 
     // Call the shared scraper function directly — no HTTP loopback needed.
     // The scraper uses createAdminClient() internally to bypass RLS.
+    // We only run 2 queries for the manual trigger to prevent Vercel 502 Timeouts (10s limit).
     const { scrapeAndInsertOpportunities } = await import('@/lib/opportunities/scraper')
-    const result = await scrapeAndInsertOpportunities()
+    const result = await scrapeAndInsertOpportunities(2)
 
     revalidatePath('/admin/opportunities')
     return { success: true, count: result.processed || 0 }
