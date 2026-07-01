@@ -8,14 +8,20 @@ import { FadeIn } from "@/components/ui/fade-in";
 
 export const metadata: Metadata = {
   title: "Hackathon",
-  description: "Join the SEES Tech Hub Mini Hackathon. Build campus solutions for UNILAG students.",
+  description:
+    "Join the SEES Hackathon. Build campus solutions for UNILAG students.",
   openGraph: {
     title: "Hackathon | SEES Tech Hub",
-    description: "Join the SEES Tech Hub Mini Hackathon. Build campus solutions for UNILAG students.",
-    images: ["/api/og/default?title=STH%20Mini%20Hackathon&description=Build%20campus%20solutions%20for%20UNILAG%20students."],
+    description:
+      "Join the SEES Hackathon. Build campus solutions for UNILAG students.",
+    images: [
+      "/api/og/default?title=SEES%20Hackathon%202026&description=Build%20campus%20solutions%20for%20UNILAG%20students.",
+    ],
   },
   twitter: {
-    images: ["/api/og/default?title=STH%20Mini%20Hackathon&description=Build%20campus%20solutions%20for%20UNILAG%20students."],
+    images: [
+      "/api/og/default?title=SEES%20Hackathon&description=Build%20campus%20solutions%20for%20UNILAG%20students.",
+    ],
   },
 };
 
