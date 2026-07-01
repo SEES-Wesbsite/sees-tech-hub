@@ -4,7 +4,16 @@ import { UserQuestsClient } from "./quests-client";
 import { getCurrentWeekMonday } from "@/lib/utils";
 
 export const metadata = {
-  title: "My Quests | SEES Tech Hub",
+  title: "My Quests",
+  description: "Complete your Weekly 3 assignments to earn XP and level up your rank.",
+  openGraph: {
+    title: "My Quests | SEES Tech Hub",
+    description: "Complete your Weekly 3 assignments to earn XP and level up your rank.",
+    images: ["/api/og/default?title=My%20Quests&description=Complete%20assignments%20to%20earn%20XP%20and%20level%20up."],
+  },
+  twitter: {
+    images: ["/api/og/default?title=My%20Quests&description=Complete%20assignments%20to%20earn%20XP%20and%20level%20up."],
+  },
 };
 
 export default async function UserQuestsPage() {

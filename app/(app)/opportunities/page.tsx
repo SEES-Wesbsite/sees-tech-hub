@@ -6,8 +6,16 @@ import Link from 'next/link'
 import { Plus } from 'lucide-react'
 
 export const metadata = {
-  title: 'Opportunities | SEES Tech Hub',
+  title: 'Opportunities',
   description: 'Find personalized career and academic opportunities curated for you.',
+  openGraph: {
+    title: 'Opportunities | SEES Tech Hub',
+    description: 'Find personalized career and academic opportunities curated for you.',
+    images: ["/api/og/default?title=Opportunities&description=Curated%20internships,%20hackathons,%20and%20scholarships."],
+  },
+  twitter: {
+    images: ["/api/og/default?title=Opportunities&description=Curated%20internships,%20hackathons,%20and%20scholarships."],
+  },
 }
 
 export default async function OpportunitiesPage() {

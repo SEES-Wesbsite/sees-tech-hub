@@ -3,7 +3,16 @@ import { redirect } from 'next/navigation'
 import { EventsClient } from './events-client'
 
 export const metadata = {
-  title: 'Events & RSVPs | SEES Tech Hub',
+  title: 'Events',
+  description: 'RSVP to upcoming events, attend in-person to claim live points, and level up your rank.',
+  openGraph: {
+    title: 'Events & RSVPs | SEES Tech Hub',
+    description: 'RSVP to upcoming events, attend in-person to claim live points, and level up your rank.',
+    images: ["/api/og/default?title=Hub%20Events&description=RSVP%20to%20upcoming%20events%20and%20level%20up."],
+  },
+  twitter: {
+    images: ["/api/og/default?title=Hub%20Events&description=RSVP%20to%20upcoming%20events%20and%20level%20up."],
+  },
 }
 
 export default async function EventsPage() {

@@ -86,8 +86,47 @@ export default async function OpportunityDetailPage({
     if (save) isSaved = true
   }
 
+  // Determine schema type
+  const isEvent = opportunity.opportunity_type === 'event' || opportunity.opportunity_type === 'hackathon';
+  const schemaType = isEvent ? 'Event' : 'JobPosting';
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": schemaType,
+    "title": opportunity.title,
+    "description": opportunity.summary,
+    "datePosted": opportunity.published_at || opportunity.created_at,
+    "hiringOrganization": {
+      "@type": "Organization",
+      "name": opportunity.organization,
+      "logo": "https://tech.seesunilag.com/logo-mark.svg"
+    },
+    "jobLocation": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": opportunity.location || "Lagos",
+        "addressRegion": "LA",
+        "addressCountry": "NG"
+      }
+    },
+    "employmentType": opportunity.opportunity_type === 'internship' ? 'INTERN' : 'OTHER',
+    "baseSalary": opportunity.compensation ? {
+      "@type": "MonetaryAmount",
+      "currency": "NGN",
+      "value": {
+        "@type": "QuantitativeValue",
+        "value": opportunity.compensation,
+        "unitText": "YEAR"
+      }
+    } : undefined,
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+      />
       <OpportunityDetailClient 
         opportunity={opportunity as Opportunity} 
         initialIsSaved={isSaved} 
