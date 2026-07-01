@@ -75,10 +75,10 @@ export async function completeQuizSession(sessionId: string, finalScore: number)
 
   if (!session) throw new Error('Session not found');
 
-  // Mark session completed
+  // Mark session completed and save the score
   await adminClient
     .from('quiz_sessions')
-    .update({ completed: true })
+    .update({ completed: true, score: finalScore })
     .eq('id', sessionId);
 
   // 2. Branch logic based on Quiz Type

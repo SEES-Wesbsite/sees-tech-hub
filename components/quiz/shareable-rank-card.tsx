@@ -1,4 +1,5 @@
 import React from 'react';
+import { RANK_TITLES } from './quiz-constants';
 
 interface ShareableRankCardProps {
   userName: string;
@@ -75,15 +76,20 @@ export const ShareableRankCard = React.forwardRef<HTMLDivElement, ShareableRankC
             borderRadius: '50%',
             background: bgGradient,
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             boxShadow: '0 0 60px rgba(0,0,0,0.5)',
-            marginBottom: '40px',
+            marginBottom: '16px',
             border: '8px solid rgba(255,255,255,0.1)'
           }}>
-            <span style={{ fontSize: '120px', fontWeight: '900', color: '#ffffff', textShadow: '0 4px 24px rgba(0,0,0,0.4)' }}>
-              {rankLetter}
+            <span style={{ fontSize: '72px', fontWeight: '900', color: '#ffffff', textShadow: '0 4px 24px rgba(0,0,0,0.4)', lineHeight: 1 }}>
+              {rankLetter}-Rank
             </span>
+          </div>
+
+          <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#a1a1aa', textTransform: 'uppercase', letterSpacing: '4px', marginBottom: '32px' }}>
+            {RANK_TITLES[rankLetter] || RANK_TITLES['E']}
           </div>
 
           {/* Score & Name */}

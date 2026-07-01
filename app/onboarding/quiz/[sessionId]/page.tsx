@@ -1,7 +1,7 @@
 import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { getQuizState } from '@/lib/actions/quiz';
-import { QuizArenaClient } from './quiz-arena-client';
+import { QuizArena } from '@/components/quiz/quiz-arena';
 
 export default async function QuizSessionPage({ params }: { params: Promise<{ sessionId: string }> }) {
   const supabase = await createClient();
@@ -35,7 +35,7 @@ export default async function QuizSessionPage({ params }: { params: Promise<{ se
         </div>
 
         <div className="relative z-10 w-full min-h-screen flex flex-col pt-10 pb-20 px-4 md:px-8">
-          <QuizArenaClient 
+          <QuizArena 
             sessionId={sessionId} 
             initialState={initialState} 
             userName={userName}
