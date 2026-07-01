@@ -27,6 +27,11 @@ const SYSTEM_PROMPT = `
 You are an Opportunity Normalization Engine.
 Your job is to extract raw text and convert it into a structured JSON array of opportunities.
 You MUST output ONLY valid JSON matching the following schema. No markdown wrappers.
+
+CRITICAL LOCATION RULES:
+1. The user is based in Nigeria. You MUST reject (set relevance_score < 5) any opportunity that requires relocation outside Nigeria, or requires work authorization/citizenship in the US, EU, UK, or Asia (e.g., Bangladesh, India).
+2. Accept ONLY opportunities that are explicitly located in Nigeria (e.g. Lagos), OR are 100% Remote / Worldwide, OR are international scholarships/fellowships that Nigerians are eligible for.
+
 {
   "opportunities": [
     {
@@ -41,7 +46,7 @@ You MUST output ONLY valid JSON matching the following schema. No markdown wrapp
       "compensation": string or null,
       "deadline": string (ISO 8601) or null,
       "tags": [string],
-      "relevance_score": number (1-10, reject spam/expired with score < 7)
+      "relevance_score": number (1-10, reject spam/expired/foreign with score < 7)
     }
   ]
 }
@@ -60,18 +65,35 @@ async function processInChunks<T, R>(items: T[], chunkSize: number, processor: (
 
 // Helper: Generate dynamic boolean queries
 function generateQueries(count: number): string[] {
-  const domains = ['site:boards.greenhouse.io', 'site:lever.co', 'site:jobs.ashbyhq.com', 'site:wellfound.com']
-  const roles = ['"software engineer"', '"frontend developer"', '"react developer"', '"fullstack"', '"product manager"', '"data scientist"']
-  const modifiers = ['internship OR intern', 'remote OR hybrid', 'graduate OR "new grad"']
+  const queries: string[] = []
+  const location = '(Lagos OR Nigeria)'
   
-  const queries = []
-  for (let i = 0; i < count; i++) {
-    const domain = domains[Math.floor(Math.random() * domains.length)]
-    const role = roles[Math.floor(Math.random() * roles.length)]
-    const modifier = modifiers[Math.floor(Math.random() * modifiers.length)]
-    queries.push(`${domain} ${role} ${modifier}`)
+  const techRoles = ['"frontend"', '"backend"', '"machine learning"', '"software engineer"', '"fullstack"', '"data"']
+  const jobBoards = ['site:boards.greenhouse.io', 'site:lever.co', 'site:jobs.ashbyhq.com', 'site:wellfound.com']
+  const jobModifiers = ['internship OR intern', 'internship', 'remote', '"new grad"']
+  
+  const oppBoards = ['site:devpost.com', 'site:opportunitydesk.org', 'site:opportunitiesforafricans.com']
+  const oppTypes = ['"hackathon"', '"scholarship"', '"fellowship"', '"tech program"']
+  
+  while (queries.length < count) {
+    const isJob = Math.random() > 0.3 // 70% jobs, 30% other opps
+    
+    if (isJob) {
+      const board = jobBoards[Math.floor(Math.random() * jobBoards.length)]
+      const role = techRoles[Math.floor(Math.random() * techRoles.length)]
+      // Weight internships heavily
+      const modifier = Math.random() > 0.3 ? 'internship OR intern' : jobModifiers[Math.floor(Math.random() * jobModifiers.length)]
+      
+      queries.push(`${board} ${role} ${modifier} ${location}`)
+    } else {
+      const board = oppBoards[Math.floor(Math.random() * oppBoards.length)]
+      const type = oppTypes[Math.floor(Math.random() * oppTypes.length)]
+      
+      queries.push(`${board} ${type} ${location}`)
+    }
   }
-  return [...new Set(queries)] // return unique
+  
+  return [...new Set(queries)]
 }
 
 /**
