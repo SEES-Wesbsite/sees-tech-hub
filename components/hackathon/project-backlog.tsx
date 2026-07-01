@@ -81,7 +81,7 @@ export function ProjectBacklog() {
         </div>
 
         <Tabs defaultValue="software" className="w-full">
-          <TabsList className="w-full flex gap-2 overflow-x-auto scrollbar-hide h-auto mb-8 bg-slate-100 border border-slate-200 rounded-xl p-4">
+          <TabsList className="w-full flex gap-2 overflow-x-auto scrollbar-hide h-auto mb-8 bg-transparent border border-border rounded-xl p-4">
             <TabsTrigger className="py-3.5 rounded-md" value="software">
               Software
             </TabsTrigger>

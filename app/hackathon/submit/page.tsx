@@ -112,7 +112,7 @@ export default function SubmitHackathonPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-24 pb-20 overflow-x-hidden">
+    <div className="min-h-screen bg-background pt-24 pb-20 overflow-x-hidden">
       <FadeIn className="container px-4 mx-auto max-w-5xl">
         {isSuccess ? (
           <SubmitSuccess name={submittedName} onDismiss={handleDismissSuccess} />
@@ -138,7 +138,7 @@ export default function SubmitHackathonPage() {
           {/* Main Form */}
           <div className="lg:col-span-2">
             <form onSubmit={handleSubmit} className="space-y-8">
-              <div className="p-6 md:p-8 bg-white border border-slate-200 rounded-2xl shadow-sm">
+              <div className="p-6 md:p-8 bg-transparent border border-border rounded-2xl shadow-sm">
                 <h3 className="text-xl font-bold mb-6 border-b border-border pb-4">
                   Project Details
                 </h3>
@@ -204,7 +204,7 @@ export default function SubmitHackathonPage() {
                 </div>
               </div>
 
-              <div className="p-6 md:p-8 bg-white border border-slate-200 rounded-2xl shadow-sm">
+              <div className="p-6 md:p-8 bg-transparent border border-border rounded-2xl shadow-sm">
                 <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
                   <h3 className="text-xl font-bold">Team Members</h3>
                   <Button
@@ -221,7 +221,7 @@ export default function SubmitHackathonPage() {
                   {teamMembers.map((member, index) => (
                     <div
                       key={index}
-                      className="flex flex-col gap-4 p-4 md:p-5 bg-slate-50 rounded-xl border border-slate-200"
+                      className="flex flex-col gap-4 p-4 md:p-5 bg-transparent rounded-xl border border-border"
                     >
                       <div className="flex items-center justify-between md:hidden pb-2 border-b border-slate-200/50">
                         <h4 className="text-sm font-bold text-slate-700">Team Member {index + 1}</h4>
@@ -294,7 +294,7 @@ export default function SubmitHackathonPage() {
                 </div>
               </div>
 
-              <div className="p-6 md:p-8 bg-white border border-slate-200 rounded-2xl shadow-sm">
+              <div className="p-6 md:p-8 bg-transparent border border-border rounded-2xl shadow-sm">
                 <h3 className="text-xl font-bold mb-2">Upload Concept Note</h3>
                 <p className="text-sm text-slate-500 mb-6">
                   Upload your proposal as a PDF (Max 2 pages, 5MB).
@@ -323,12 +323,12 @@ export default function SubmitHackathonPage() {
 
           {/* Guidelines Sidebar */}
           <div className="space-y-6">
-            <div className="p-6 border border-brand/20 bg-brand/5 rounded-2xl">
+            <div className="p-6 border border-brand/20 bg-transparent rounded-2xl">
               <h3 className="font-bold text-brand flex items-center gap-2 mb-4 text-lg">
                 <Info className="w-5 h-5" /> Submission Guidelines
               </h3>
               <div className="space-y-5 text-sm text-slate-700">
-                <p className="font-medium text-slate-900 bg-white p-3 rounded-lg border border-brand/10 shadow-sm">
+                <p className="font-medium text-foreground bg-transparent p-3 rounded-lg border border-brand/10 shadow-sm">
                   Your Concept Note must be a PDF and should not exceed 2 pages.
                 </p>
                 <div>
@@ -357,7 +357,7 @@ export default function SubmitHackathonPage() {
               </div>
             </div>
 
-            <div className="p-6 border border-red-200 bg-red-50 rounded-2xl">
+            <div className="p-6 border border-destructive/20 bg-transparent rounded-2xl">
               <h3 className="font-bold text-red-600 flex items-center gap-2 mb-4 text-lg">
                 <AlertTriangle className="w-5 h-5" /> Common Mistakes
               </h3>

@@ -67,7 +67,7 @@ export default function HackathonLandingPage() {
               asChild
               variant="outline"
               size="lg"
-              className="h-14 px-8 text-lg rounded-full w-full sm:w-auto bg-white border-slate-200 hover:bg-slate-50 text-slate-900"
+              className="h-14 px-8 text-lg rounded-full w-full sm:w-auto bg-transparent border-border hover:bg-secondary text-foreground"
             >
               <a href="#criteria">View Judging Criteria</a>
             </Button>
