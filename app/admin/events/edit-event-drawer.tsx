@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import { Loader } from "@/components/ui/loader";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
+import { FileUploader } from "@/components/ui/file-uploader";
 
 export function EditEventDrawer({
   open,
@@ -49,7 +50,7 @@ export function EditEventDrawer({
   const [pointsAwarded, setPointsAwarded] = useState("50");
   const [claimCode, setClaimCode] = useState("");
   const [claimExpiresAt, setClaimExpiresAt] = useState("");
-  const [coverImageUrl, setCoverImageUrl] = useState("");
+  const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [meetingUrl, setMeetingUrl] = useState("");
   const [status, setStatus] = useState("upcoming");
 
@@ -72,7 +73,7 @@ export function EditEventDrawer({
           ? new Date(eventData.claim_expires_at).toISOString().slice(0, 16)
           : "",
       );
-      setCoverImageUrl(eventData.cover_image_url || "");
+      setCoverImageFile(null);
       setMeetingUrl(eventData.meeting_url || "");
       setStatus(eventData.status || "upcoming");
     }
@@ -91,7 +92,7 @@ export function EditEventDrawer({
     formData.append("pointsAwarded", pointsAwarded);
     formData.append("claimCode", claimCode);
     if (claimExpiresAt) formData.append("claimExpiresAt", claimExpiresAt);
-    if (coverImageUrl) formData.append("coverImageUrl", coverImageUrl);
+    if (coverImageFile) formData.append("coverImageFile", coverImageFile);
     if (meetingUrl) formData.append("meetingUrl", meetingUrl);
     formData.append("status", status);
 
@@ -130,7 +131,7 @@ export function EditEventDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="w-full md:w-[600px] right-0 left-auto h-screen top-0 mt-0 rounded-none data-[vaul-drawer-direction=bottom]:h-auto data-[vaul-drawer-direction=bottom]:max-h-[85vh] data-[vaul-drawer-direction=bottom]:rounded-t-xl data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:inset-x-0">
+      <DrawerContent className="">
         <ScrollArea className="h-full overflow-y-auto scrollbar-hide">
           <div className="p-6">
             <DrawerHeader className="px-0 pt-0 text-left">
@@ -211,7 +212,7 @@ export function EditEventDrawer({
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-4">
                   <div className="space-y-2">
                     <Label>Event Type</Label>
                     <Select value={eventType} onValueChange={setEventType}>
@@ -228,12 +229,13 @@ export function EditEventDrawer({
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Cover Image URL (Required for Hero UI)</Label>
-                    <Input
-                      value={coverImageUrl}
-                      onChange={(e) => setCoverImageUrl(e.target.value)}
-                      placeholder="https://..."
-                      required
+                    <Label>Cover Image</Label>
+                    <FileUploader
+                      value={coverImageFile}
+                      onChange={setCoverImageFile}
+                      accept="image/*"
+                      maxSizeMB={5}
+                      existingUrl={eventData?.cover_image_url}
                     />
                   </div>
                 </div>

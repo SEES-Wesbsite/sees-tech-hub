@@ -27,6 +27,7 @@ import { createEvent, generateEventWithAI } from "@/app/actions/admin-events";
 import { toast } from "sonner";
 import { Loader } from "@/components/ui/loader";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
+import { FileUploader } from "@/components/ui/file-uploader";
 import { useLocalStorageState } from "@/hooks/use-local-storage";
 
 export function CreateEventDrawer({
@@ -66,10 +67,7 @@ export function CreateEventDrawer({
     "create-event-exp",
     "",
   );
-  const [coverImageUrl, setCoverImageUrl] = useLocalStorageState(
-    "create-event-img",
-    "",
-  );
+  const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [meetingUrl, setMeetingUrl] = useLocalStorageState(
     "create-event-meet",
     "",
@@ -92,7 +90,7 @@ export function CreateEventDrawer({
       setEventType(res.data.event_type || "general");
       setPointsAwarded(res.data.points_awarded?.toString() || "50");
       setLocation(res.data.location || "");
-      setCoverImageUrl(res.data.cover_image_url || "");
+      setLocation(res.data.location || "");
       setMeetingUrl(res.data.meeting_url || "");
       toast.success("Event details generated!");
     }
@@ -111,7 +109,7 @@ export function CreateEventDrawer({
     formData.append("pointsAwarded", pointsAwarded);
     formData.append("claimCode", claimCode);
     if (claimExpiresAt) formData.append("claimExpiresAt", claimExpiresAt);
-    if (coverImageUrl) formData.append("coverImageUrl", coverImageUrl);
+    if (coverImageFile) formData.append("coverImageFile", coverImageFile);
     if (meetingUrl) formData.append("meetingUrl", meetingUrl);
 
     const res = await createEvent(formData);
@@ -129,7 +127,7 @@ export function CreateEventDrawer({
       setLocation("");
       setPointsAwarded("50");
       setClaimCode("");
-      setCoverImageUrl("");
+      setCoverImageFile(null);
       setMeetingUrl("");
     }
   };
@@ -223,12 +221,12 @@ export function CreateEventDrawer({
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Cover Image URL (Required for Hero UI)</Label>
-                    <Input
-                      value={coverImageUrl}
-                      onChange={(e) => setCoverImageUrl(e.target.value)}
-                      placeholder="https://..."
-                      required
+                    <Label>Cover Image (Optional)</Label>
+                    <FileUploader 
+                      value={coverImageFile}
+                      onChange={setCoverImageFile}
+                      accept="image/*"
+                      maxSizeMB={5}
                     />
                   </div>
                 </div>

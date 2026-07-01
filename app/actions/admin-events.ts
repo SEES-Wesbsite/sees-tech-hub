@@ -35,24 +35,38 @@ export async function createEvent(formData: FormData) {
     
     const validatedData = eventSchema.parse({
       title: formData.get('title'),
-      description: formData.get('description'),
+      description: formData.get('description') || '',
       event_date: formData.get('eventDate'),
-      location: formData.get('location'),
+      location: formData.get('location') || '',
       event_type: formData.get('eventType'),
       points_awarded: formData.get('pointsAwarded'),
-      claim_code: formData.get('claimCode'),
-      claim_expires_at: formData.get('claimExpiresAt'),
-      cover_image_url: formData.get('coverImageUrl'),
-      meeting_url: formData.get('meetingUrl'),
+      claim_code: formData.get('claimCode') || '',
+      claim_expires_at: formData.get('claimExpiresAt') || '',
+      meeting_url: formData.get('meetingUrl') || '',
       status: formData.get('status') || 'upcoming',
     })
     
+    let final_cover_image_url: string | null = null
+    const coverFile = formData.get('coverImageFile') as File | null
+    if (coverFile && coverFile.size > 0) {
+      const ext = coverFile.name.split('.').pop() || 'png'
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+      
+      const { error: uploadErr } = await supabase.storage
+        .from('event_covers')
+        .upload(fileName, coverFile)
+        
+      if (uploadErr) throw new Error('Failed to upload cover image: ' + uploadErr.message)
+      
+      const { data: { publicUrl } } = supabase.storage.from('event_covers').getPublicUrl(fileName)
+      final_cover_image_url = publicUrl
+    }
+
     // Cleanup empty strings to nulls
     const description = validatedData.description || null
     const location = validatedData.location || null
     const claim_code = validatedData.claim_code || null
     const claim_expires_at = validatedData.claim_expires_at || null
-    const cover_image_url = validatedData.cover_image_url || null
     const meeting_url = validatedData.meeting_url || null
 
     const { error } = await supabase.from('events').insert({
@@ -64,7 +78,7 @@ export async function createEvent(formData: FormData) {
       points_awarded: validatedData.points_awarded,
       claim_code,
       claim_expires_at,
-      cover_image_url,
+      cover_image_url: final_cover_image_url,
       meeting_url,
       status: validatedData.status
     })
@@ -90,26 +104,40 @@ export async function updateEvent(id: string, formData: FormData) {
     
     const validatedData = eventSchema.parse({
       title: formData.get('title'),
-      description: formData.get('description'),
+      description: formData.get('description') || '',
       event_date: formData.get('eventDate'),
-      location: formData.get('location'),
+      location: formData.get('location') || '',
       event_type: formData.get('eventType'),
       points_awarded: formData.get('pointsAwarded'),
-      claim_code: formData.get('claimCode'),
-      claim_expires_at: formData.get('claimExpiresAt'),
-      cover_image_url: formData.get('coverImageUrl'),
-      meeting_url: formData.get('meetingUrl'),
+      claim_code: formData.get('claimCode') || '',
+      claim_expires_at: formData.get('claimExpiresAt') || '',
+      meeting_url: formData.get('meetingUrl') || '',
       status: formData.get('status'),
     })
     
+    let final_cover_image_url: string | null = null
+    const coverFile = formData.get('coverImageFile') as File | null
+    if (coverFile && coverFile.size > 0) {
+      const ext = coverFile.name.split('.').pop() || 'png'
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+      
+      const { error: uploadErr } = await supabase.storage
+        .from('event_covers')
+        .upload(fileName, coverFile)
+        
+      if (uploadErr) throw new Error('Failed to upload cover image: ' + uploadErr.message)
+      
+      const { data: { publicUrl } } = supabase.storage.from('event_covers').getPublicUrl(fileName)
+      final_cover_image_url = publicUrl
+    }
+
     const description = validatedData.description || null
     const location = validatedData.location || null
     const claim_code = validatedData.claim_code || null
     const claim_expires_at = validatedData.claim_expires_at || null
-    const cover_image_url = validatedData.cover_image_url || null
     const meeting_url = validatedData.meeting_url || null
 
-    const { error } = await supabase.from('events').update({
+    const updates: any = {
       title: validatedData.title,
       description,
       event_date: validatedData.event_date,
@@ -118,10 +146,15 @@ export async function updateEvent(id: string, formData: FormData) {
       points_awarded: validatedData.points_awarded,
       claim_code,
       claim_expires_at,
-      cover_image_url,
       meeting_url,
       status: validatedData.status
-    }).eq('id', id)
+    }
+    
+    if (final_cover_image_url) {
+      updates.cover_image_url = final_cover_image_url
+    }
+
+    const { error } = await supabase.from('events').update(updates).eq('id', id)
     
     if (error) throw error
     revalidatePath('/admin/events')
