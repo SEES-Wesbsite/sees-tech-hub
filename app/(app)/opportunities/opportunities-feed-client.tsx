@@ -96,10 +96,11 @@ export function OpportunitiesFeedClient({ initialOpportunities, initialSavedIds,
       />
 
       <div className="space-y-4">
+        <div className="h-px w-full bg-border my-8" />
         <h3 className="font-serif font-semibold text-lg text-foreground mb-4">Latest Opportunities</h3>
         
         {/* Filters */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-nowrap overflow-x-auto scrollbar-hide whitespace-nowrap gap-2 pb-2">
           {CATEGORIES.map(cat => (
             <Badge 
               key={cat} 

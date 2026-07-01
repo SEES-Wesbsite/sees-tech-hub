@@ -189,27 +189,30 @@ export function OpportunityDetailClient({ opportunity, initialIsSaved }: Props) 
                 </a>
               </Button>
               
-              <div className="flex gap-2 w-full">
+              <div className="flex justify-center gap-4 w-full mt-4">
                 <Button 
                   variant={isSaved ? "secondary" : "outline"} 
-                  className="flex-1"
+                  size="icon"
+                  className="w-14 h-14 rounded-2xl"
                   onClick={toggleSave}
+                  title={isSaved ? "Saved" : "Save Opportunity"}
                 >
                   {isSaved ? (
-                    <><BookmarkCheck className="w-4 h-4 mr-2 text-brand" /> Saved</>
+                    <BookmarkCheck className="w-6 h-6 text-brand" />
                   ) : (
-                    <><Bookmark className="w-4 h-4 mr-2" /> Save</>
+                    <Bookmark className="w-6 h-6" />
                   )}
                 </Button>
                 
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="shrink-0 w-10 h-10" 
+                  className="w-14 h-14 rounded-2xl" 
                   onClick={handleShare}
                   disabled={isSharing}
+                  title="Share Opportunity"
                 >
-                  <Share2 className="w-4 h-4" />
+                  <Share2 className="w-6 h-6" />
                 </Button>
               </div>
             </div>

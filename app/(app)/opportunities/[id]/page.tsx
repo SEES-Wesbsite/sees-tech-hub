@@ -122,7 +122,7 @@ export default async function OpportunityDetailPage({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-8">
+    <div className="w-full max-w-5xl mx-auto py-8 px-4 md:px-8">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
