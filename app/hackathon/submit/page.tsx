@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLocalStorageState } from "@/hooks/use-local-storage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,11 +36,11 @@ export default function SubmitHackathonPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [submittedName, setSubmittedName] = useState("");
 
-  const [projectName, setProjectName] = useState("");
-  const [tagline, setTagline] = useState("");
-  const [track, setTrack] = useState("");
-  const [techStack, setTechStack] = useState("");
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([
+  const [projectName, setProjectName, clearProjectName] = useLocalStorageState("hackathon_projectName", "");
+  const [tagline, setTagline, clearTagline] = useLocalStorageState("hackathon_tagline", "");
+  const [track, setTrack, clearTrack] = useLocalStorageState("hackathon_track", "");
+  const [techStack, setTechStack, clearTechStack] = useLocalStorageState("hackathon_techStack", "");
+  const [teamMembers, setTeamMembers, clearTeamMembers] = useLocalStorageState<TeamMember[]>("hackathon_teamMembers", [
     { name: "", role: "", email: "" },
   ]);
   const [conceptNoteFile, setConceptNoteFile] = useState<File | null>(null);
@@ -108,6 +109,11 @@ export default function SubmitHackathonPage() {
     setTechStack("");
     setTeamMembers([{ name: "", role: "", email: "" }]);
     setConceptNoteFile(null);
+    clearProjectName();
+    clearTagline();
+    clearTrack();
+    clearTechStack();
+    clearTeamMembers();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
