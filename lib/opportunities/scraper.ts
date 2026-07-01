@@ -96,11 +96,20 @@ export async function scrapeAndInsertOpportunities(): Promise<{ processed: numbe
   for (const q of queries) {
     try {
       const res = await fetch(`https://serpapi.com/search.json?q=${encodeURIComponent(q)}&api_key=${SERPAPI_KEY}`, {
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(15000),
+        cache: 'no-store'
       })
-      if (!res.ok) continue
+      if (!res.ok) {
+        console.error(`SerpAPI returned ${res.status} for query: ${q}`)
+        continue
+      }
       const data = await res.json()
+      if (data.error) {
+        console.error(`SerpAPI error payload for query ${q}:`, data.error)
+      }
+      
       const links = data.organic_results?.map((r: any) => r.link) || []
+      console.log(`Query "${q}" returned ${links.length} results.`)
       links.forEach((l: string) => allUrls.add(l))
     } catch (e) {
       console.error("SerpAPI error:", e)

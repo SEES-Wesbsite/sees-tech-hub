@@ -150,7 +150,7 @@ export function EditOpportunityDrawer({
             </DrawerDescription>
           </DrawerHeader>
 
-          <ScrollArea className="flex-1 px-4 py-4">
+          <ScrollArea className="flex-1 px-4 py-4 overflow-y-auto scrollbar-hide">
             <form
               id="edit-opp-form"
               onSubmit={handleSubmit}
@@ -314,23 +314,27 @@ export function EditOpportunityDrawer({
                 </div>
               </div>
             </form>
-          </ScrollArea>
 
-          <DrawerFooter className="shrink-0 border-t border-border flex-row justify-end gap-2 p-4">
-            <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-            <Button type="submit" form="edit-opp-form" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loader className="w-4 h-4 mr-2" variant="simple-spin" />{" "}
-                  Saving...
-                </>
-              ) : (
-                "Save Changes"
-              )}
-            </Button>
-          </DrawerFooter>
+            <DrawerFooter className="shrink-0 border-t border-border flex-row justify-end gap-2 p-4">
+              <DrawerClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DrawerClose>
+              <Button
+                type="submit"
+                form="edit-opp-form"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader className="w-4 h-4 mr-2" variant="simple-spin" />{" "}
+                    Saving...
+                  </>
+                ) : (
+                  "Save Changes"
+                )}
+              </Button>
+            </DrawerFooter>
+          </ScrollArea>
         </div>
       </DrawerContent>
     </Drawer>
