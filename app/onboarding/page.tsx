@@ -31,7 +31,7 @@ export default async function OnboardingPage() {
   // If they already set their persona (e.g. from a previous aborted session)
   const hasPersona = !!(profile.preferred_name && profile.primary_stacks && profile.primary_stacks.length > 0);
   
-  const defaultName = profile.preferred_name || profile.full_name?.split(' ')[0] || '';
+  const defaultName = profile.preferred_name || (profile.full_name && profile.full_name !== 'New User' ? profile.full_name.split(' ')[0] : '');
 
   return (
     <div className="min-h-screen bg-[#010907] flex items-center justify-center p-4 relative overflow-hidden">
