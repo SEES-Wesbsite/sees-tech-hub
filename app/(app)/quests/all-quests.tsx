@@ -26,8 +26,11 @@ export function AllQuestsClient({ allQuests }: AllQuestsClientProps) {
   const handleStartGlobalQuest = async (questId: string) => {
     try {
       setStartingId(questId);
-      const { sessionId } = await assignAndStartQuest(questId);
-      router.push(`/quiz/${sessionId}`);
+      const res = await assignAndStartQuest(questId);
+      if ('error' in res) {
+        throw new Error(res.error);
+      }
+      router.push(`/quiz/${res.data?.sessionId}`);
     } catch (err: any) {
       toast.error(err.message || "Failed to start global quest.");
       setStartingId(null);

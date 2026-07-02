@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { getCurrentWeekMonday } from '@/lib/utils';
+import { withErrorHandling } from '@/lib/utils/error-handler';
 
 // Convert XP to Rank (S, A, B, C, D, E)
 function calculateRank(points: number): string {
@@ -97,12 +98,10 @@ export async function startQuestQuiz(assignmentId: string) {
   return { sessionId: session.id };
 }
 
-export async function generateMyWeeklyQuests() {
+export const generateMyWeeklyQuests = async () => withErrorHandling(async () => {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: 'Unauthorized' };
-
-  try {
+  if (!user) throw new Error('Unauthorized');
     const targetWeekStart = getCurrentWeekMonday();
 
     // 1. Fetch User Data (Rank & Stacks)
@@ -187,7 +186,8 @@ export async function generateMyWeeklyQuests() {
       status: 'assigned'
     }));
 
-    const { error: insertErr } = await supabase.from('quest_assignments').insert(inserts);
+    const adminClient = await createAdminClient();
+    const { error: insertErr } = await adminClient.from('quest_assignments').insert(inserts);
     if (insertErr) {
       if (insertErr.code === '23505') return { error: 'Assignments already exist for this week.' };
       throw insertErr;
@@ -195,13 +195,9 @@ export async function generateMyWeeklyQuests() {
 
     revalidatePath('/quests');
     return { success: true };
-    
-  } catch (err: any) {
-    return { error: err.message || 'An error occurred during generation.' };
-  }
-}
+});
 
-export async function assignAndStartQuest(questId: string) {
+export const assignAndStartQuest = async (questId: string) => withErrorHandling(async () => {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('Unauthorized');
@@ -226,7 +222,8 @@ export async function assignAndStartQuest(questId: string) {
   }
 
   // 2. Otherwise, assign it right now
-  const { data: newAssignment, error } = await supabase
+  const adminClient = await createAdminClient();
+  const { data: newAssignment, error } = await adminClient
     .from('quest_assignments')
     .insert({
       user_id: user.id,
@@ -243,4 +240,4 @@ export async function assignAndStartQuest(questId: string) {
 
   // 3. Start it
   return await startQuestQuiz(newAssignment.id);
-}
+});

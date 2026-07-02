@@ -66,7 +66,7 @@ export function YourQuests({ assignments, allCompletedAssignments }: YourQuestsP
     setGenerating(true);
     setError(null);
     const res = await generateMyWeeklyQuests();
-    if (res?.error) setError(res.error);
+    if ('error' in res) setError(res.error);
     setGenerating(false);
   };
 

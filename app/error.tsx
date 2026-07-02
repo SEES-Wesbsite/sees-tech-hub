@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import * as Sentry from '@sentry/nextjs';
 
 export default function GlobalErrorBoundary({
   error,
@@ -56,18 +57,17 @@ export default function GlobalErrorBoundary({
             </p>
           </div>
 
-          <div className="w-full bg-black/50 border border-white/5 rounded-xl p-4 mt-4 text-left overflow-hidden">
-            <p className="text-xs text-destructive/80 font-mono break-all line-clamp-3">
-              {error.message || "Unknown Runtime Exception"}
-            </p>
-            {error.digest && (
-              <p className="text-xs text-white/40 font-mono mt-2">
-                Trace ID: {error.digest}
-              </p>
-            )}
-          </div>
-
           <div className="flex flex-col sm:flex-row gap-3 w-full pt-4">
+            <Button 
+              onClick={() => {
+                Sentry.captureException(error);
+                Sentry.showReportDialog({ eventId: Sentry.lastEventId() });
+              }} 
+              variant="secondary"
+              className="flex-1 rounded-xl h-12"
+            >
+              Report Issue
+            </Button>
             <Button 
               onClick={() => reset()} 
               variant="outline"
