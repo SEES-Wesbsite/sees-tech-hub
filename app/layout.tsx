@@ -34,6 +34,9 @@ export const metadata: Metadata = {
     title: "SEES Tech Hub",
     description: "The exclusive portal for SEES builders.",
   },
+  verification: {
+    google: "5t6l62KH7rzXdJNkp1TuiAUZ-AuWmNZ1OgrLwAA7yEU",
+  },
 };
 
 export default function RootLayout({
