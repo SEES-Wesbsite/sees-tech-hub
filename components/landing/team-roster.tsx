@@ -7,12 +7,12 @@ const TEAM_MEMBERS = [
   {
     name: "Victor Mathias",
     role: "President, SEES UNILAG",
-    img: "excos/mathias.JPEG",
+    img: "excos/mathias.jpg",
   },
   {
     name: "Akeem Jr Odebiyi",
     role: "Team Lead",
-    img: "excos/akeem.jfif",
+    img: "excos/akeem.jpg",
   },
   {
     name: "Eyitayo Obembe",
@@ -27,7 +27,7 @@ const TEAM_MEMBERS = [
   {
     name: "Prosper Marshall",
     role: "Community Manager",
-    img: "excos/prosper.png",
+    img: "excos/prosper.jpg",
   },
 ];
 
