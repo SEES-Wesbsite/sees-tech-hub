@@ -20,7 +20,8 @@ export const metadata: Metadata = {
     default: "SEES Tech Hub",
     template: "%s | SEES Tech Hub",
   },
-  description: "The exclusive portal for SEES builders, connecting students with opportunities, hackathons, and quests.",
+  description:
+    "The exclusive portal for SEES builders, connecting students with opportunities, hackathons, and quests.",
   openGraph: {
     title: "SEES Tech Hub",
     description: "The exclusive portal for SEES builders.",
@@ -53,7 +54,12 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col selection:bg-brand selection:text-[#95fde2]">
         <Providers>
           {children}
-          <Toaster theme="dark" position="top-center" richColors toastOptions={{ style: { fontFamily: 'var(--font-sans)' } }} />
+          <Toaster
+            theme="dark"
+            position="top-center"
+            richColors
+            toastOptions={{ style: { fontFamily: "var(--font-sans)" } }}
+          />
         </Providers>
         <script
           type="application/ld+json"
@@ -61,14 +67,14 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "SEES Tech Hub",
-              "url": "https://tech.seesunilag.com",
-              "logo": "https://tech.seesunilag.com/logo-mark.svg",
-              "sameAs": [
+              name: "SEES Tech Hub",
+              url: "https://tech.seesunilag.com",
+              logo: "https://tech.seesunilag.com/logo-mark.svg",
+              sameAs: [
                 "https://x.com/sees_unilag",
-                "https://www.linkedin.com/company/seesunilag"
-              ]
-            })
+                "https://www.linkedin.com/company/seesunilag",
+              ],
+            }),
           }}
         />
       </body>

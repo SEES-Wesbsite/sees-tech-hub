@@ -1,14 +1,20 @@
-import { redirect, notFound } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
-import { getQuizState } from '@/lib/actions/quiz';
-import { QuizArena } from '@/components/quiz/quiz-arena';
+import { redirect, notFound } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { getQuizState } from "@/lib/actions/quiz";
+import { QuizArenaClient } from "./quiz-arena-client";
 
-export default async function QuizSessionPage({ params }: { params: Promise<{ sessionId: string }> }) {
+export default async function QuizSessionPage({
+  params,
+}: {
+  params: Promise<{ sessionId: string }>;
+}) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/login');
+    redirect("/login");
   }
 
   const { sessionId } = await params;
@@ -16,15 +22,16 @@ export default async function QuizSessionPage({ params }: { params: Promise<{ se
   try {
     // getQuizState handles authorization and returns the initial state securely
     const initialState = await getQuizState(sessionId);
-    
+
     // Also fetch user's preferred name for dynamic personalization
     const { data: profile } = await supabase
-      .from('users')
-      .select('preferred_name, full_name')
-      .eq('id', user.id)
+      .from("users")
+      .select("preferred_name, full_name")
+      .eq("id", user.id)
       .single();
 
-    const userName = profile?.preferred_name || profile?.full_name?.split(' ')[0] || 'Builder';
+    const userName =
+      profile?.preferred_name || profile?.full_name?.split(" ")[0] || "Builder";
 
     return (
       <div className="min-h-screen bg-[#010907] text-white overflow-hidden relative">
@@ -35,9 +42,9 @@ export default async function QuizSessionPage({ params }: { params: Promise<{ se
         </div>
 
         <div className="relative z-10 w-full min-h-screen flex flex-col pt-10 pb-20 px-4 md:px-8">
-          <QuizArena 
-            sessionId={sessionId} 
-            initialState={initialState} 
+          <QuizArenaClient
+            sessionId={sessionId}
+            initialState={initialState}
             userName={userName}
           />
         </div>

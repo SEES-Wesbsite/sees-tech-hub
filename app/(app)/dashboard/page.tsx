@@ -44,11 +44,11 @@ export default async function DashboardPage() {
     // Active Quests
     supabase.from("quest_bank").select("*").eq("status", "active").order("created_at", { ascending: false }),
     // KPI: Quests Completed
-    supabase.from("quest_completions").select("*", { count: "exact", head: true }).eq("user_id", user.id).eq("status", "approved"),
+    supabase.from("submissions").select("*", { count: "exact", head: true }).eq("user_id", user.id).eq("status", "approved"),
     // KPI: Events RSVP'd
     supabase.from("event_rsvps").select("*", { count: "exact", head: true }).eq("user_id", user.id),
     // Leaderboard (Top 10)
-    supabase.from("users").select("id, full_name, preferred_name, avatar_url, total_points").order("total_points", { ascending: false }).limit(10),
+    supabase.from("users").select("id, full_name, preferred_name, avatar_url, total_points").neq("role", "admin").order("total_points", { ascending: false }).limit(10),
     // Recommended Opportunities (approved only, latest 5)
     supabase.from("opportunities").select("*").eq("status", "approved").order("created_at", { ascending: false }).limit(5),
     // Upcoming Events (latest 5)
