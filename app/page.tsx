@@ -32,7 +32,7 @@ export default function LandingPage() {
         <AlumniPipeline />
         <HackerArena />
         <Hackathons />
-        {/* <TeamRoster /> */}
+        <TeamRoster />
       </main>
 
       <Footer />
