@@ -9,14 +9,25 @@ export function handlePrelaunch(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // Never rewrite Next.js internals or API routes
+  // Ignore Next.js internals
   if (pathname.startsWith("/_next") || pathname.startsWith("/api")) {
     return null;
   }
 
-  // Never rewrite requests for assets or metadata
-  const accept = request.headers.get("accept") ?? "";
-  if (!accept.includes("text/html")) {
+  // Ignore metadata routes
+  if (
+    pathname.startsWith("/icon") ||
+    pathname.startsWith("/apple-icon") ||
+    pathname.startsWith("/opengraph-image") ||
+    pathname.startsWith("/twitter-image") ||
+    pathname.startsWith("/manifest") ||
+    pathname === "/favicon.ico"
+  ) {
+    return null;
+  }
+
+  // Ignore static files
+  if (/\.[^/]+$/.test(pathname)) {
     return null;
   }
 
@@ -25,6 +36,6 @@ export function handlePrelaunch(request: NextRequest) {
     return null;
   }
 
-  // Rewrite every other page to the countdown
+  // Redirect everything else
   return NextResponse.rewrite(new URL("/countdown", request.url));
 }

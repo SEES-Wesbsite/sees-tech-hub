@@ -21,6 +21,7 @@ export default function CountdownPage() {
         enableMouseInteraction
         mouseInfluence={0.25}
       />
+
       <CountdownText />
     </main>
   );
