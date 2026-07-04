@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const ENABLE_PRELAUNCH = true;
+const ENABLE_PRELAUNCH = false;
 
 const ALLOWED_PATHS = ["/", "/countdown"];
 

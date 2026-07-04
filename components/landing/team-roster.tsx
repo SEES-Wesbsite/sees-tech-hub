@@ -47,7 +47,7 @@ export function TeamRoster() {
         </div>
 
         {/* Masonry/Asymmetrical Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {TEAM_MEMBERS.map((member, i) => (
             <motion.div
               key={member.name}
@@ -55,24 +55,22 @@ export function TeamRoster() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className={`relative group overflow-hidden rounded-2xl bg-slate-200 ${
-                i === 0
-                  ? "md:col-span-2 md:row-span-2 aspect-square md:aspect-auto"
-                  : "aspect-[3/4]"
+              className={`relative group overflow-hidden rounded-2xl bg-slate-200 aspect-[3/4] ${
+                i === 0 ? "md:col-span-2 md:row-span-2 md:aspect-auto" : ""
               }`}
             >
               <img
                 src={member.img}
                 alt={member.name}
-                className="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+                className="w-full h-full object-cover grayscale transition-all duration-500 md:group-hover:grayscale-0 md:group-hover:scale-105"
               />
 
               {/* Overlay Content */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 md:p-6">
                 <h3 className="text-white font-serif font-semibold text-xl md:text-2xl">
                   {member.name}
                 </h3>
-                <p className="text-white/80 font-medium text-sm">
+                <p className="text-white/90 font-medium text-sm">
                   {member.role}
                 </p>
               </div>
@@ -80,7 +78,7 @@ export function TeamRoster() {
           ))}
         </div>
 
-        <div className="mt-16 text-center">
+        {/* <div className="mt-16 text-center">
           <p className="text-slate-600 mb-6 font-medium">
             Think you have what it takes to build the Hub?
           </p>
@@ -91,7 +89,7 @@ export function TeamRoster() {
             <Users className="w-4 h-4" />
             Apply to Join the Team
           </a>
-        </div>
+        </div> */}
       </div>
     </section>
   );

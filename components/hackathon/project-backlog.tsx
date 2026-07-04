@@ -15,8 +15,8 @@ const BACKLOG = {
       desc: "Connect students traveling the same routes to campus to share costs and reduce traffic.",
     },
     {
-      title: "Study Room & Lab Booking Portal",
-      desc: "An automated system to reserve study spaces in the library or time slots in department labs.",
+      title: "Digital Attendance System",
+      desc: "A fast, QR-code based web app for class reps to take and export lecture attendance effortlessly.",
     },
   ],
   ai: [
@@ -35,8 +35,8 @@ const BACKLOG = {
   ],
   cybersecurity: [
     {
-      title: "Secure Voting Platform",
-      desc: "A cryptographic, tamper-proof voting system for faculty and departmental elections.",
+      title: "Password Strength Analyzer",
+      desc: "A local, offline tool that evaluates password entropy and checks hashes against known leaked databases.",
     },
     {
       title: "Campus Phishing Detector",
@@ -45,12 +45,12 @@ const BACKLOG = {
   ],
   embedded: [
     {
-      title: "Smart Lab Access",
-      desc: "NFC or biometric-based door locks for sensitive laboratory environments.",
+      title: "Arduino Pomodoro Study Timer",
+      desc: "A physical desktop timer with LEDs and a buzzer to help students maintain focused study sessions.",
     },
     {
-      title: "IoT Hostel Power Monitor",
-      desc: "A real-time dashboard tracking electricity consumption in specific hostel blocks to identify waste.",
+      title: "Hostel Environment Logger",
+      desc: "A simple DHT11 sensor setup that logs room temperature and humidity to a local SD card or basic dashboard.",
     },
     {
       title: "Automated Department Noticeboard",

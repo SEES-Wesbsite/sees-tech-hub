@@ -102,7 +102,8 @@ export function HeroSection() {
             Join the Hub <ArrowRight className="w-5 h-5" />
           </Link>
           <Link
-            href="#"
+            href="https://chat.whatsapp.com/JAIc2yFhyqAL30lD3bBXis?s=cl&p=a&mlu=0&ilr=0"
+            target="_blank"
             className="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 rounded-full font-bold transition-all flex items-center justify-center"
           >
             Join the WhatsApp Community

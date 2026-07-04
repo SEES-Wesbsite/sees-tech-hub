@@ -8,7 +8,6 @@
    - Perform all data fetching, authentication checks, and database aggregations in the `page.tsx` (Server Component).
    - Pass the resulting data as serializable props to the `Client Component`.
 2. **API Routes**: Do NOT create ad-hoc client-side API routes (e.g., `/api/agent/stats`) for core dashboard rendering.
-3. **SWR/React Query**: Avoid using `useSWR` or `react-query` for data that is available at request time. Hydrate the UI directly from server props.
 
 ## 🎨 Styling: Token-Based System
 1. **No Hardcoded Colors**: NEVER use raw Tailwind color classes (e.g., `bg-blue-600`, `text-slate-500`) or hex codes (e.g., `#F8FAFC`).

@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Shield, LayoutDashboard, Link as LinkIcon, ArrowLeft, CalendarDays, Briefcase, Activity } from 'lucide-react'
+import { Shield, LayoutDashboard, Link as LinkIcon, ArrowLeft, CalendarDays, Briefcase, Activity, Trophy } from 'lucide-react'
 import {
   SidebarProvider,
   Sidebar,
@@ -97,6 +97,13 @@ export default async function AdminLayout({
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <Link href="/admin/hackathon" className="text-foreground font-medium">
+                      <Trophy className="w-5 h-5 mr-2" /> Hackathon
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroup>
           </SidebarContent>
@@ -135,6 +142,10 @@ export default async function AdminLayout({
           <Link href="/admin/opportunities" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
             <Briefcase className="w-5 h-5" />
             <span className="text-[10px] font-medium mt-1">Jobs</span>
+          </Link>
+          <Link href="/admin/hackathon" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
+            <Trophy className="w-5 h-5" />
+            <span className="text-[10px] font-medium mt-1">Hackathon</span>
           </Link>
           <Link href="/dashboard" className="flex flex-col items-center py-2 text-muted-foreground hover:text-foreground">
             <ArrowLeft className="w-5 h-5" />

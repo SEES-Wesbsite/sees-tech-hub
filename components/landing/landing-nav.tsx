@@ -20,7 +20,8 @@ export function LandingNav() {
       </div>
       <div className="flex items-center gap-6">
         <Link
-          href="#"
+          href="https://chat.whatsapp.com/JAIc2yFhyqAL30lD3bBXis?s=cl&p=a&mlu=0&ilr=0"
+          target="_blank"
           className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors hidden md:block"
         >
           WhatsApp Community
