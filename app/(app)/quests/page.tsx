@@ -2,23 +2,32 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { UserQuestsClient } from "./quests-client";
 import { getCurrentWeekMonday } from "@/lib/utils";
+import { ComingSoon } from "./coming-soon";
 
 export const metadata = {
   title: "My Quests",
-  description: "Complete your Weekly 3 assignments to earn XP and level up your rank.",
+  description:
+    "Complete your Weekly 3 assignments to earn XP and level up your rank.",
   openGraph: {
     title: "My Quests | SEES Tech Hub",
-    description: "Complete your Weekly 3 assignments to earn XP and level up your rank.",
-    images: ["/api/og/default?title=My%20Quests&description=Complete%20assignments%20to%20earn%20XP%20and%20level%20up."],
+    description:
+      "Complete your Weekly 3 assignments to earn XP and level up your rank.",
+    images: [
+      "/api/og/default?title=My%20Quests&description=Complete%20assignments%20to%20earn%20XP%20and%20level%20up.",
+    ],
   },
   twitter: {
-    images: ["/api/og/default?title=My%20Quests&description=Complete%20assignments%20to%20earn%20XP%20and%20level%20up."],
+    images: [
+      "/api/og/default?title=My%20Quests&description=Complete%20assignments%20to%20earn%20XP%20and%20level%20up.",
+    ],
   },
 };
 
 export default async function UserQuestsPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     redirect("/login");
@@ -35,7 +44,8 @@ export default async function UserQuestsPage() {
   // Fetch the user's weekly assignments (only active ones for this week)
   const { data: weeklyAssignmentsRaw } = await supabase
     .from("quest_assignments")
-    .select(`
+    .select(
+      `
       id,
       status,
       assigned_at,
@@ -50,7 +60,8 @@ export default async function UserQuestsPage() {
         tags,
         external_url
       )
-    `)
+    `,
+    )
     .eq("user_id", user.id)
     .eq("week_start", targetMonday)
     .order("assigned_at", { ascending: true })
@@ -61,7 +72,8 @@ export default async function UserQuestsPage() {
   // Fetch all completed assignments for the user's history
   const { data: allCompletedAssignments } = await supabase
     .from("quest_assignments")
-    .select(`
+    .select(
+      `
       id,
       status,
       completed_at,
@@ -75,7 +87,8 @@ export default async function UserQuestsPage() {
         tags,
         external_url
       )
-    `)
+    `,
+    )
     .eq("user_id", user.id)
     .eq("status", "completed")
     .order("completed_at", { ascending: false });
@@ -83,26 +96,30 @@ export default async function UserQuestsPage() {
   // Fetch all active quests in the platform
   const { data: activeQuests } = await supabase
     .from("quest_bank")
-    .select('*')
-    .eq('status', 'active');
+    .select("*")
+    .eq("status", "active");
 
-  const completedQuestIds = new Set((allCompletedAssignments || []).map(a => (a.quest_bank as any).id));
-  
+  const completedQuestIds = new Set(
+    (allCompletedAssignments || []).map((a) => (a.quest_bank as any).id),
+  );
+
   // Filter out completed quests
-  let allQuests = (activeQuests || []).filter(q => !completedQuestIds.has(q.id));
+  let allQuests = (activeQuests || []).filter(
+    (q) => !completedQuestIds.has(q.id),
+  );
 
   // Determine user rank and stacks for personalization
   const calculateRank = (points: number) => {
-    if (points >= 10000) return 'S';
-    if (points >= 5000) return 'A';
-    if (points >= 2500) return 'B';
-    if (points >= 1000) return 'C';
-    if (points >= 500) return 'D';
-    return 'E';
+    if (points >= 10000) return "S";
+    if (points >= 5000) return "A";
+    if (points >= 2500) return "B";
+    if (points >= 1000) return "C";
+    if (points >= 500) return "D";
+    return "E";
   };
-  
+
   const getDifficultyDistance = (userRank: string, questDiff: string) => {
-    const ranks = ['E', 'D', 'C', 'B', 'A', 'S'];
+    const ranks = ["E", "D", "C", "B", "A", "S"];
     const uIdx = ranks.indexOf(userRank);
     const qIdx = ranks.indexOf(questDiff);
     return Math.abs(uIdx - qIdx);
@@ -112,26 +129,34 @@ export default async function UserQuestsPage() {
   const userStacks: string[] = profile?.primary_stacks || [];
 
   // Sort global bank by familiarity
-  allQuests = allQuests.map(quest => {
-    let score = 0;
-    let matches = 0;
-    
-    // Tag matching (+10 per matched tag)
-    if (quest.tags && quest.tags.length > 0) {
-      matches = quest.tags.filter((t: string) => userStacks.includes(t)).length;
-      score += matches * 10;
-    }
+  allQuests = allQuests
+    .map((quest) => {
+      let score = 0;
+      let matches = 0;
 
-    // Difficulty matching (+20 exact, +5 for 1 tier difference)
-    const diffDist = getDifficultyDistance(userRank, quest.difficulty);
-    if (diffDist === 0) score += 20;
-    else if (diffDist === 1) score += 5;
-    else score -= (diffDist * 5); 
+      // Tag matching (+10 per matched tag)
+      if (quest.tags && quest.tags.length > 0) {
+        matches = quest.tags.filter((t: string) =>
+          userStacks.includes(t),
+        ).length;
+        score += matches * 10;
+      }
 
-    const isPerfectMatch = diffDist === 0 && matches > 0;
+      // Difficulty matching (+20 exact, +5 for 1 tier difference)
+      const diffDist = getDifficultyDistance(userRank, quest.difficulty);
+      if (diffDist === 0) score += 20;
+      else if (diffDist === 1) score += 5;
+      else score -= diffDist * 5;
 
-    return { ...quest, score, isPerfectMatch };
-  }).sort((a, b) => b.score - a.score);
+      const isPerfectMatch = diffDist === 0 && matches > 0;
+
+      return { ...quest, score, isPerfectMatch };
+    })
+    .sort((a, b) => b.score - a.score);
+
+  if (true) {
+    return <ComingSoon />;
+  }
 
   return (
     <main className="w-full relative min-h-screen">
@@ -146,14 +171,15 @@ export default async function UserQuestsPage() {
             My <span className="text-gradient">Quests</span>
           </h1>
           <p className="text-muted-foreground mt-4 text-lg max-w-2xl">
-            Complete your Weekly 3 assignments to earn XP and level up your rank.
+            Complete your Weekly 3 assignments to earn XP and level up your
+            rank.
           </p>
         </div>
 
-        <UserQuestsClient 
-          weeklyAssignments={weeklyAssignments} 
+        <UserQuestsClient
+          weeklyAssignments={weeklyAssignments}
           allCompletedAssignments={allCompletedAssignments || []}
-          allQuests={allQuests} 
+          allQuests={allQuests}
         />
       </div>
     </main>
