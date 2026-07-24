@@ -66,7 +66,7 @@ export function OnboardingClient({
       formData.append("primary_stacks", JSON.stringify(selectedStacks));
 
       await updatePersona(formData);
-      setStep("hype");
+      router.push("/dashboard");
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -175,94 +175,6 @@ export function OnboardingClient({
         </motion.div>
       )}
 
-      {step === "hype" && (
-        <motion.div
-          key="hype"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: { opacity: 1, transition: { staggerChildren: 0.6 } },
-          }}
-          className="text-center"
-        >
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 10 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-brand/20 text-brand-light mb-8 shadow-[0_0_30px_rgba(16,185,129,0.3)]"
-          >
-            <BrainCircuit className="w-10 h-10" />
-          </motion.div>
-
-          <motion.h2
-            variants={{
-              hidden: { opacity: 0, y: 10 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            className="text-4xl md:text-5xl font-serif font-bold text-white mb-6 leading-tight"
-          >
-            Soooo <span className="text-brand-light">{name}</span>!<br />
-            Are you ready?
-          </motion.h2>
-
-          <motion.p
-            variants={{
-              hidden: { opacity: 0, y: 10 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            className="text-white/60 text-lg max-w-lg mx-auto mb-10 leading-relaxed"
-          >
-            We are going to throw a very short, timed quiz at you. This will
-            determine your starting rank on the leaderboard.
-            <br />
-            <br />
-            <motion.span
-              variants={{
-                hidden: { opacity: 0, scale: 0.9 },
-                visible: {
-                  opacity: 1,
-                  scale: 1,
-                  transition: { delay: 1.5, type: "spring", stiffness: 200 },
-                },
-              }}
-              className="inline-block text-brand-light font-bold text-xl px-4 py-2 bg-brand/10 border border-brand/20 rounded-xl mt-4"
-            >
-              10 Questions. 30 Seconds each. No pauses.
-            </motion.span>
-          </motion.p>
-
-          {error && (
-            <motion.div
-              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-              className="mb-6 p-3 rounded-lg bg-destructive/20 text-destructive-foreground text-sm border border-destructive/30 max-w-md mx-auto"
-            >
-              {error}
-            </motion.div>
-          )}
-
-          <motion.button
-            variants={{
-              hidden: { opacity: 0, scale: 0.8 },
-              visible: {
-                opacity: 1,
-                scale: 1,
-                transition: { delay: 2.2, type: "spring" },
-              },
-            }}
-            onClick={handleStartQuiz}
-            disabled={loading}
-            className="px-10 py-5 rounded-full bg-white text-black font-black text-lg tracking-wider transition-all hover:scale-[1.05] active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.3)] disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-3 mx-auto"
-          >
-            {loading ? (
-              <Loader className="w-8 h-8 border-black" />
-            ) : (
-              "BEGIN PLACEMENT"
-            )}
-          </motion.button>
-        </motion.div>
-      )}
     </AnimatePresence>
   );
 }

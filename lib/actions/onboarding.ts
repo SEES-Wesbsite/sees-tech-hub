@@ -34,6 +34,7 @@ export async function updatePersona(formData: FormData) {
     .update({
       preferred_name: preferredName.trim(),
       primary_stacks: primaryStacks,
+      onboarding_status: 'completed',
     })
     .eq('id', user.id);
 
@@ -47,8 +48,29 @@ export async function updatePersona(formData: FormData) {
     actionType: 'update_persona',
     targetId: user.id,
     targetType: 'users',
-    newData: { preferred_name: preferredName.trim(), primary_stacks: primaryStacks }
+    newData: { preferred_name: preferredName.trim(), primary_stacks: primaryStacks, onboarding_status: 'completed' }
   });
+
+  const adminClient = await createAdminClient();
+  
+  // Check if they already received the bonus to prevent duplicates
+  const { data: existingBonus } = await adminClient
+    .from('point_transactions')
+    .select('id')
+    .eq('user_id', user.id)
+    .eq('reason', 'Signup Bonus')
+    .maybeSingle();
+
+  if (!existingBonus) {
+    const { error: insertError } = await adminClient.from('point_transactions').insert({
+      user_id: user.id,
+      amount: 80,
+      reason: 'Signup Bonus'
+    });
+    if (insertError) {
+      console.error('Failed to add signup bonus', insertError);
+    }
+  }
 
   revalidatePath('/onboarding');
   return { success: true };

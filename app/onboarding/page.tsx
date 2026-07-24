@@ -27,10 +27,6 @@ export default async function OnboardingPage() {
     redirect('/dashboard');
   }
 
-  // Determine starting step
-  // If they already set their persona (e.g. from a previous aborted session)
-  const hasPersona = !!(profile.preferred_name && profile.primary_stacks && profile.primary_stacks.length > 0);
-  
   const defaultName = profile.preferred_name || (profile.full_name && profile.full_name !== 'New User' ? profile.full_name.split(' ')[0] : '');
 
   return (
@@ -43,7 +39,7 @@ export default async function OnboardingPage() {
 
       <div className="relative z-10 w-full max-w-2xl">
         <OnboardingClient 
-          initialStep={hasPersona ? 'hype' : 'persona'} 
+          initialStep="persona" 
           defaultName={defaultName}
         />
       </div>
