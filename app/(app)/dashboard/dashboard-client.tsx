@@ -49,11 +49,11 @@ export function DashboardClient({
         {/* Top Section: 4-Column Grid (RankCard + KPIs) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           {/* RankCard takes 2 columns */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="lg:col-span-2"
+            className="lg:col-span-2 hidden"
           >
             <RankCard score={profile.total_points} />
           </motion.div>
@@ -88,7 +88,7 @@ export function DashboardClient({
         </div>
 
         {/* Bottom Section: Leaderboard, Opportunities, Events */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Column 1: Leaderboard */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -106,7 +106,9 @@ export function DashboardClient({
             transition={{ delay: 0.5 }}
             className="lg:col-span-2 space-y-8"
           >
-            <RecommendedOpportunities opportunities={recommendedOpportunities} />
+            <RecommendedOpportunities
+              opportunities={recommendedOpportunities}
+            />
             <RecommendedEvents events={upcomingEvents} />
           </motion.div>
         </div>
