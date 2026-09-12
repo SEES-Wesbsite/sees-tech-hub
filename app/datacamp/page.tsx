@@ -49,20 +49,16 @@ export const metadata: Metadata = {
   },
 };
 
-function ApplicationButton() {
-  const content = <>Apply Now <ArrowUpRight size={20} aria-hidden="true" /></>;
+function ApplicationButton({ showArrow = false }: { showArrow?: boolean }) {
+  const content = <>Apply Now {showArrow && <ArrowUpRight size={20} aria-hidden="true" />}</>;
   return <div className={styles.application}>
-    {scholarshipLinks.application
-      ? <a className={styles.apply} href={scholarshipLinks.application} target="_blank" rel="noopener noreferrer">{content}<span className={styles.srOnly}> (opens in a new tab)</span></a>
-      : <button className={styles.apply} type="button" disabled aria-describedby="application-pending">{content}</button>}
+    <a className={styles.apply} href={scholarshipLinks.application} target="_blank" rel="noopener noreferrer">{content}<span className={styles.srOnly}> (opens in a new tab)</span></a>
   </div>;
 }
 
 function Destination({ name, children }: { name: keyof typeof scholarshipLinks; children: React.ReactNode }) {
   const href = scholarshipLinks[name];
-  return href
-    ? <a className={styles.inlineLink} href={href} target="_blank" rel="noopener noreferrer">{children}<span className={styles.srOnly}> (opens in a new tab)</span></a>
-    : <span className={styles.stub} role="link" aria-disabled="true">{children}<span className={styles.srOnly}> (link coming soon)</span></span>;
+  return <a className={styles.inlineLink} href={href} target="_blank" rel="noopener noreferrer">{children}<span className={styles.srOnly}> (opens in a new tab)</span></a>;
 }
 
 function XIcon({ size = 16 }: { size?: number }) {
@@ -106,7 +102,6 @@ function HubLogo() {
 }
 
 export default function DataCampPage() {
-  const hasSocialStubs = !scholarshipLinks.linkedin || !scholarshipLinks.x || !scholarshipLinks.instagram;
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -151,7 +146,6 @@ export default function DataCampPage() {
           <ScholarshipHeadline />
           <p className={styles.lead}>In partnership with DataCamp, SEES Tech Hub is giving out 500 scholarships to students ready to build real data, AI, and tech skills.</p>
           <ApplicationButton />
-          {!scholarshipLinks.application && <p id="application-pending" className={styles.pending}>Application link coming soon.</p>}
         </div>
         <div className={styles.heroAside} data-enter>
           <div className={styles.partnership}>
@@ -191,11 +185,10 @@ export default function DataCampPage() {
                 <h3>Follow SEES Tech Hub</h3>
                 <p>Follow us on LinkedIn, X, and Instagram. You&apos;ll drop these links in the form.</p>
                 <div className={styles.stepActions} aria-label="Follow SEES Tech Hub">
-                  <Destination name="linkedin"><LinkedInIcon /> LinkedIn <ArrowUpRight size={14} aria-hidden="true" /></Destination>
-                  <Destination name="x"><XIcon /> X <ArrowUpRight size={14} aria-hidden="true" /></Destination>
-                  <Destination name="instagram"><InstagramIcon /> Instagram <ArrowUpRight size={14} aria-hidden="true" /></Destination>
+                  <Destination name="linkedin"><LinkedInIcon /> LinkedIn</Destination>
+                  <Destination name="x"><XIcon /> X</Destination>
+                  <Destination name="instagram"><InstagramIcon /> Instagram</Destination>
                 </div>
-                {hasSocialStubs && <small className={styles.stubNote}>Social links coming soon.</small>}
               </div>
             </DepthReveal>
           </li>
@@ -204,8 +197,8 @@ export default function DataCampPage() {
             <DepthReveal>
               <div className={styles.stepBody}>
                 <h3>Join the community</h3>
-                <p>If you&apos;re not already in the SEES Tech Hub WhatsApp community, <Destination name="whatsapp">join here <span aria-hidden="true">↗</span></Destination>. This is where every update, opportunity, and event gets shared first.</p>
-                <div className={styles.stepActions}><Destination name="whatsapp"><MessageCircle size={16} aria-hidden="true" /> Join on WhatsApp <ArrowUpRight size={14} aria-hidden="true" /></Destination></div>
+                <p>If you&apos;re not already in the SEES Tech Hub WhatsApp community, <Destination name="whatsapp">join here</Destination>. This is where every update, opportunity, and event gets shared first.</p>
+                <div className={styles.stepActions}><Destination name="whatsapp"><MessageCircle size={16} aria-hidden="true" /> Join on WhatsApp</Destination></div>
               </div>
             </DepthReveal>
           </li>
@@ -215,8 +208,8 @@ export default function DataCampPage() {
               <div className={`${styles.stepBody} ${styles.finalStep}`}>
                 <h3>Fill the application</h3>
                 <p>Head to the form and apply. Already a registered SEES Tech Hub member? Let us know in the form, registered members get priority consideration.</p>
-                <div className={styles.stepApply}><ApplicationButton />{!scholarshipLinks.application && <small className={styles.pending}>Application link coming soon.</small>}</div>
-                <p className={styles.memberNote}>Not a member yet? <Destination name="registration">Join here</Destination> before you apply, it only takes a minute <span aria-hidden="true">↗</span></p>
+                <div className={styles.stepApply}><ApplicationButton showArrow /></div>
+                <p className={styles.memberNote}>Not a member yet? <Destination name="registration">Join here</Destination> before you apply, it only takes a minute.</p>
               </div>
             </DepthReveal>
           </li>
@@ -256,17 +249,17 @@ export default function DataCampPage() {
           </nav>
           <nav className={styles.footerLinks} aria-label="SEES Tech Hub social links">
             <h2>Connect</h2>
-            <Destination name="linkedin"><LinkedInIcon /> LinkedIn <ArrowUpRight size={14} aria-hidden="true" /></Destination>
-            <Destination name="instagram"><InstagramIcon /> Instagram <ArrowUpRight size={14} aria-hidden="true" /></Destination>
-            <Destination name="x"><XIcon /> X <ArrowUpRight size={14} aria-hidden="true" /></Destination>
-            <Destination name="whatsapp"><MessageCircle size={16} aria-hidden="true" /> WhatsApp <ArrowUpRight size={14} aria-hidden="true" /></Destination>
+            <Destination name="linkedin"><LinkedInIcon /> LinkedIn</Destination>
+            <Destination name="instagram"><InstagramIcon /> Instagram</Destination>
+            <Destination name="x"><XIcon /> X</Destination>
+            <Destination name="whatsapp"><MessageCircle size={16} aria-hidden="true" /> WhatsApp</Destination>
           </nav>
         </div>
         <div className={styles.footerCommunity}>
           <div><h2>There&apos;s a community behind this.</h2><p>Join us for updates, events, and what comes next.</p></div>
-          <a className={styles.communityLink} href={scholarshipLinks.whatsapp!} target="_blank" rel="noopener noreferrer"><MessageCircle size={18} aria-hidden="true" /> Join the WhatsApp community <ArrowUpRight size={18} aria-hidden="true" /><span className={styles.srOnly}> (opens in a new tab)</span></a>
+          <a className={styles.communityLink} href={scholarshipLinks.whatsapp} target="_blank" rel="noopener noreferrer"><MessageCircle size={18} aria-hidden="true" /> Join the WhatsApp community<span className={styles.srOnly}> (opens in a new tab)</span></a>
         </div>
-        <div className={styles.footerBottom}><small>© {new Date().getFullYear()} SEES Tech Hub. All rights reserved.</small><a href="#scholarship-main">Back to top <ArrowUpRight size={14} aria-hidden="true" /></a></div>
+        <div className={styles.footerBottom}><small>© {new Date().getFullYear()} SEES Tech Hub. All rights reserved.</small><a href="#scholarship-main">Back to top</a></div>
       </div>
     </footer>
   </div>;

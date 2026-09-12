@@ -70,7 +70,7 @@ export function GET(request: Request) {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative' }}>
         <span style={{ fontSize: 17, fontWeight: 700 }}>tech.seesunilag.com/datacamp</span>
         <span style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '13px 18px', borderRadius: 8, backgroundColor: colors.gold, fontSize: 17, fontWeight: 800 }}>
-          Apply for a scholarship <span>↗</span>
+          Apply for a scholarship
         </span>
       </div>
     </div>,

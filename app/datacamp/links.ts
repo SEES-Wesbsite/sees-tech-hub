@@ -1,7 +1,6 @@
-// Replace null stubs with confirmed STH destinations before launch.
 // All three Apply buttons read the same form URL.
-export const scholarshipLinks: Record<'application' | 'linkedin' | 'x' | 'instagram' | 'whatsapp' | 'registration', string | null> = {
-  application: null,
+export const scholarshipLinks: Record<'application' | 'linkedin' | 'x' | 'instagram' | 'whatsapp' | 'registration', string> = {
+  application: 'https://forms.gle/4KVkQUcQRFoUdZ598',
   linkedin: 'https://www.linkedin.com/company/sees-tech-hub/',
   x: 'https://x.com/SEESTechHub',
   instagram: 'https://www.instagram.com/sees_techhub',

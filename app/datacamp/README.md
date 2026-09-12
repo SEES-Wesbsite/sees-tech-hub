@@ -12,9 +12,9 @@ Approved 2026-09-11. This direction applies to `/datacamp`; the main homepage re
 
 ## Launch configuration
 
-`links.ts` is the source for all destinations. The supplied LinkedIn, Instagram, and X URLs are connected. WhatsApp matches the existing homepage. Registration currently uses `/login`.
+`links.ts` is the source for all destinations. The Google Form, LinkedIn, Instagram, and X URLs are connected. WhatsApp matches the existing homepage. Registration currently uses `/login`.
 
-Still needed: the Google Form URL and confirmed selection timeline. Application buttons remain explicitly unavailable until the form URL is supplied.
+Applications are reviewed on a rolling basis. Every applicant receives their outcome by email.
 
 ## Design reference
 

@@ -32,11 +32,8 @@
 .highlight::before { content: ''; position: absolute; z-index: -1; background: var(--scholarship-mint); inset: auto 0 7px 0; height: 3px; transform: rotate(-2deg); border-radius: 50%; }
 .lead { font-size: 17px; line-height: 1.8; max-width: 580px; color: var(--local-muted); margin: 28px 0; }
 .application { display: flex; }
-.apply { display: inline-flex; align-items: center; justify-content: center; gap: 34px; min-height: 56px; padding: 15px 25px; background: var(--scholarship-gold); color: var(--scholarship-ink); border: 1px solid transparent; border-radius: 9px; font-size: 15px; font-weight: 750; text-decoration: none; transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
-.apply:not(:disabled):hover { transform: translateY(-3px) scale(1.015); box-shadow: 0 8px 0 color-mix(in srgb, var(--scholarship-ink) 17%, transparent); filter: saturate(1.05); }
-.apply:disabled { cursor: not-allowed; border-style: dashed; border-color: color-mix(in srgb, var(--scholarship-ink) 40%, transparent); }
-.pending, .stubNote { font-size: 12px; line-height: 1.5; color: var(--local-muted); }
-.pending { margin-top: 10px; }
+.apply { display: inline-flex; align-items: center; justify-content: center; gap: 34px; min-height: 56px; padding: 15px 25px; background: var(--scholarship-gold); color: var(--scholarship-ink); border: 1px solid transparent; border-radius: 9px; cursor: pointer; font-size: 15px; font-weight: 750; text-decoration: none; transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
+.apply:hover { transform: translateY(-3px) scale(1.015); box-shadow: 0 8px 0 color-mix(in srgb, var(--scholarship-ink) 17%, transparent); filter: saturate(1.05); }
 .heroAside { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 24px; min-width: 0; }
 .smallLabel { color: var(--local-muted); font-size: 12px; margin-bottom: 14px; }
 .lockup { display: flex; align-items: center; gap: 12px; }
@@ -52,11 +49,8 @@
 .benefitList li { display: flex; align-items: flex-start; gap: 15px; }
 .check { display: flex; justify-content: center; align-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--scholarship-mint); flex: 0 0 auto; }
 .benefitList p { margin: 2px 0 0; font-size: 16px; font-weight: 550; line-height: 1.65; max-width: 330px; }
-.inlineLink, .stub { font-weight: 650; text-decoration: underline; text-underline-offset: 4px; color: var(--scholarship-ink); }
-.inlineLink { transition: color .2s ease, text-decoration-thickness .2s ease; }
+.inlineLink { font-weight: 650; text-decoration: underline; text-underline-offset: 4px; color: var(--scholarship-ink); transition: color .2s ease, text-decoration-thickness .2s ease; }
 .inlineLink:hover { color: var(--scholarship-green); text-decoration-thickness: 2px; }
-.stub { text-decoration-style: dotted; cursor: not-allowed; }
-.stubNote { display: block; margin-top: 12px; }
 .selection { background: var(--scholarship-cream); border-radius: 18px; padding: 28px; display: grid; gap: 20px; }
 .selectionHeading { display: flex; gap: 12px; align-items: flex-start; }
 .noteMark { font-size: 34px; line-height: 1; color: var(--scholarship-green); }
@@ -168,7 +162,6 @@
 .stepActions svg { flex-shrink: 0; }
 .finalStep { background: color-mix(in srgb, var(--scholarship-mint) 13%, var(--scholarship-paper)); border-color: color-mix(in srgb, var(--scholarship-green) 28%, var(--scholarship-paper)); }
 .stepApply { margin-top: 24px; }
-.stepApply .pending { display: block; }
 .steps .memberNote { border-top: 1px solid var(--local-border); padding-top: 18px; margin-top: 24px; font-size: 12px; line-height: 1.8; }
 .faq { scroll-margin-top: 24px; }
 .footer { background: var(--scholarship-ink); color: var(--scholarship-paper); padding-top: 76px; --footer-muted: color-mix(in srgb, var(--scholarship-paper) 72%, var(--scholarship-ink)); --footer-border: color-mix(in srgb, var(--scholarship-paper) 19%, var(--scholarship-ink)); }
