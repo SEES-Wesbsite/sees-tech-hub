@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SEES Tech Hub
 
-## Getting Started
+Next.js App Router application for the SEES community. The active application now consists of the original landing page, Google sign-in, onboarding, member profiles, and the active URL shortener.
 
-First, run the development server:
+## Local development
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Use Node.js 22.19 or newer and npm. Set these values in `.env.local`:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_SITE_URL` — deployment origin; omit locally to use the request origin.
+- `NEXT_PUBLIC_SENTRY_DSN` — optional error reporting.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Run `npm install`, then `npm run dev -- --port 3005`.
+Configure Google OAuth in Supabase and allow `http://localhost:3005/auth/callback` for local development and the equivalent production callback.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Checks
 
-## Learn More
+- `npx tsc --noEmit`
+- `npm test`
+- `npm run lint`
+- `npm run build`
 
-To learn more about Next.js, take a look at the following resources:
+## Application boundaries
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `app/page.tsx` and `components/landing/` retain the existing landing page.
+- `app/(app)/` contains authenticated profile pages.
+- `app/actions/profile.ts` owns profile saving and sign-out.
+- `lib/profile.ts` loads profiles on the server; `lib/profile-validation.ts` validates editable fields and safe external links.
+- `proxy.ts` refreshes sessions only on authentication/profile routes.
+- `lib/types.ts` describes the active database surface, not the full historical schema.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Quiz, quests, rankings, events, opportunities, hackathons, other admin tools, and scraping have been removed from the application. Previous feature page URLs temporarily redirect to the dashboard to keep existing landing links usable. Removed feature API endpoints return 404. Short links remain available at /go/[slug], with admin management at /admin/links.
 
-## Deploy on Vercel
+## Database preservation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+All existing feature tables, records, views, routines, storage buckets, and files are retained. Application traffic reads/writes `public.users` and `public.short_links`, plus Supabase authentication. Existing profile values, including role, avatar, and historical points, are retained.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The optional read-only inventory is `npm run db:inspect`. It requires `SUPABASE_SERVICE_ROLE_KEY` locally; the application itself does not use that key. It prints relation names, schema types, row counts, and bucket visibility, never record values or credentials. REST visibility does not prove the absence of external clients, database jobs, or other dependencies.
+
+Migration `035_restrict_profile_write_permissions.sql` is a separate security change: it prevents direct browser writes to privileged profile columns. It changes permissions only and must be applied manually by the user. Review the linked project's migration history first: older migrations (including 034) contain destructive operations and must not be replayed blindly. No migration was applied as part of the cleanup.
+
+See [CLEANUP.md](CLEANUP.md) for preservation and deployment notes. A future UI direction remains a separate decision.
+
+The approved follow-up table deletions are documented in [DATABASE-RETIREMENT.md](DATABASE-RETIREMENT.md). Files 036–039 are for manual SQL Editor execution; none has been applied by the agent.

@@ -43,3 +43,5 @@ next-env.d.ts
 
 docs/*
 *.m.md
+# Local Supabase CLI connection metadata
+/supabase/.temp/

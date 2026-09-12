@@ -11,7 +11,7 @@ export default function NotFound() {
       </h1>
       
       <h2 className="text-2xl font-bold text-foreground mb-2">
-        Oops! That page doesn't exist.
+        Oops! That page does not exist.
       </h2>
       
       <p className="text-muted-foreground max-w-md mb-8">

@@ -1,42 +1,16 @@
-import { createClient } from "@/lib/supabase/server";
-import { ClientDock } from "@/components/layout/client-dock";
-import { redirect } from "next/navigation";
+import Link from 'next/link';
+import { signOut } from '@/app/actions/profile';
 
-export default async function AppLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/login");
-  }
-
-  const { data: profile } = await supabase
-    .from("users")
-    .select("role, onboarding_status")
-    .eq("id", user.id)
-    .single();
-
-  if (!profile || profile.onboarding_status !== "completed") {
-    redirect("/onboarding");
-  }
-
-  const isAdmin = profile?.role === "admin";
-
-  return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden selection:bg-brand selection:text-[#95fde2]">
-      {/* Main Content Area */}
-      <main className="w-full min-h-screen pb-32 relative z-10 max-w-5xl mx-auto">
-        {children}
-      </main>
-
-      {/* Global Dock Navigation */}
-      <ClientDock isAdmin={isAdmin} />
-    </div>
-  );
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  return <div className="min-h-screen bg-background text-foreground">
+    <header className="border-b border-border">
+      <nav aria-label="Main navigation" className="mx-auto flex max-w-4xl flex-wrap items-center gap-6 px-6 py-5">
+        <Link href="/" className="mr-auto font-semibold">SEES Tech Hub</Link>
+        <Link href="/dashboard">Overview</Link>
+        <Link href="/profile">Edit profile</Link>
+        <form action={signOut}><button className="text-muted-foreground">Sign out</button></form>
+      </nav>
+    </header>
+    <main className="mx-auto max-w-4xl px-6 py-12">{children}</main>
+  </div>;
 }
