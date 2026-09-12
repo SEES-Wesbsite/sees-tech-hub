@@ -10,19 +10,42 @@ import { ScholarshipFaq } from './faq';
 export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
-  title: '500 DataCamp Scholarships',
-  description: 'In partnership with DataCamp, SEES Tech Hub is giving out 500 scholarships to students ready to build real data, AI, and tech skills.',
+  title: '500 Free DataCamp Scholarships for Students',
+  description: 'Apply for one of 500 free DataCamp scholarships from SEES Tech Hub and build practical skills in data, artificial intelligence, programming, and technology.',
+  keywords: [
+    'DataCamp scholarship',
+    'free DataCamp scholarship',
+    'data science scholarship for students',
+    'AI scholarship for students',
+    'SEES Tech Hub',
+    'DataCamp Donates',
+    'Nigeria tech scholarships',
+  ],
   alternates: { canonical: '/datacamp' },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+  },
   openGraph: {
     title: '500 DataCamp Scholarships. On Us.',
-    description: '500 spots. One form. Apply now.',
+    description: 'Free DataCamp access for students ready to build practical skills in data, AI, programming, and technology.',
     url: '/datacamp',
+    siteName: 'SEES Tech Hub',
+    locale: 'en_NG',
     type: 'website',
+    images: [{
+      url: '/api/og/datacamp',
+      width: 1200,
+      height: 630,
+      alt: '500 DataCamp scholarships from SEES Tech Hub and DataCamp Donates',
+    }],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: '500 DataCamp Scholarships. On Us.',
-    description: 'In partnership with DataCamp, SEES Tech Hub is giving out 500 scholarships.',
+    description: 'Free DataCamp access for students ready to grow in data, AI, programming, and technology.',
+    images: ['/api/og/datacamp'],
   },
 };
 
@@ -64,7 +87,33 @@ function HubLogo() {
 
 export default function DataCampPage() {
   const hasSocialStubs = !scholarshipLinks.linkedin || !scholarshipLinks.x || !scholarshipLinks.instagram;
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': 'https://tech.seesunilag.com/datacamp#webpage',
+        url: 'https://tech.seesunilag.com/datacamp',
+        name: '500 Free DataCamp Scholarships for Students',
+        description: metadata.description,
+        isPartOf: { '@id': 'https://tech.seesunilag.com/#website' },
+        about: { '@id': 'https://tech.seesunilag.com/datacamp#scholarship' },
+        inLanguage: 'en-NG',
+      },
+      {
+        '@type': 'EducationalOccupationalProgram',
+        '@id': 'https://tech.seesunilag.com/datacamp#scholarship',
+        name: 'SEES Tech Hub DataCamp Scholarship',
+        description: metadata.description,
+        financialAidEligible: 'Full DataCamp scholarship at no cost to selected students',
+        provider: { '@type': 'Organization', name: 'SEES Tech Hub', url: 'https://tech.seesunilag.com' },
+        sponsor: { '@type': 'Organization', name: 'DataCamp', url: 'https://www.datacamp.com' },
+        occupationalCategory: ['Data science', 'Artificial intelligence', 'Programming', 'Technology'],
+      },
+    ],
+  };
   return <div className={styles.page}>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
     <PageEntrances />
     <a className={styles.skip} href="#scholarship-main">Skip to content</a>
     <header className={styles.header}>
