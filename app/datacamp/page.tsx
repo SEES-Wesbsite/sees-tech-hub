@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowDown, ArrowUpRight, Check, MessageCircle } from 'lucide-react';
-import { scholarshipLinks, selectionTimeline } from './links';
+import { scholarshipLinks } from './links';
 import styles from './scholarship.module.css';
 import { AmbientMotion, DepthReveal, FadeGrid, PageEntrances, ScholarshipHeadline } from './motion';
 import { ScholarshipFaq } from './faq';
@@ -65,6 +65,26 @@ function Destination({ name, children }: { name: keyof typeof scholarshipLinks; 
     : <span className={styles.stub} role="link" aria-disabled="true">{children}<span className={styles.srOnly}> (link coming soon)</span></span>;
 }
 
+function XIcon({ size = 16 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z" />
+  </svg>;
+}
+
+function LinkedInIcon({ size = 16 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V8.98h3.42v1.57h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.29ZM5.32 7.41a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.04H3.54V8.98H7.1v11.47Z" />
+  </svg>;
+}
+
+function InstagramIcon({ size = 16 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+    <rect x="3" y="3" width="18" height="18" rx="5" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+  </svg>;
+}
+
 const benefits = [
   "Full access to DataCamp's courses and learning tracks",
   'Hands-on projects and certifications you can actually show for it',
@@ -74,7 +94,7 @@ const benefits = [
 const questions = [
   { question: 'Who can apply?', answer: "Any student. You don't have to be a SEES or STH member to apply, though registered members get priority consideration." },
   { question: 'Is this really free?', answer: 'Yes. 500 full scholarships, no payment required at any point.' },
-  { question: 'When will I know if I was selected?', answer: selectionTimeline ?? '[Insert date/timeline once confirmed]' },
+  { question: 'How will I know the outcome of my application?', answer: 'Applications are reviewed on a rolling basis, so applying earlier gives you a better chance of receiving an earlier response. We will email you whether or not you are selected.' },
   { question: "What if I'm not selected this time?", answer: 'Stay in the STH community, more opportunities like this come through regularly.' },
 ];
 
@@ -171,9 +191,9 @@ export default function DataCampPage() {
                 <h3>Follow SEES Tech Hub</h3>
                 <p>Follow us on LinkedIn, X, and Instagram. You&apos;ll drop these links in the form.</p>
                 <div className={styles.stepActions} aria-label="Follow SEES Tech Hub">
-                  <Destination name="linkedin">LinkedIn <ArrowUpRight size={14} aria-hidden="true" /></Destination>
-                  <Destination name="x">X <ArrowUpRight size={14} aria-hidden="true" /></Destination>
-                  <Destination name="instagram">Instagram <ArrowUpRight size={14} aria-hidden="true" /></Destination>
+                  <Destination name="linkedin"><LinkedInIcon /> LinkedIn <ArrowUpRight size={14} aria-hidden="true" /></Destination>
+                  <Destination name="x"><XIcon /> X <ArrowUpRight size={14} aria-hidden="true" /></Destination>
+                  <Destination name="instagram"><InstagramIcon /> Instagram <ArrowUpRight size={14} aria-hidden="true" /></Destination>
                 </div>
                 {hasSocialStubs && <small className={styles.stubNote}>Social links coming soon.</small>}
               </div>
@@ -205,7 +225,7 @@ export default function DataCampPage() {
 
       <section className={`${styles.container} ${styles.selection}`} aria-labelledby="selection-title" data-enter>
         <div className={styles.selectionHeading}><span className={styles.noteMark} aria-hidden="true">↳</span><h2 id="selection-title">How selection works</h2></div>
-        <p>Applications are reviewed. We&apos;re looking for students who are genuinely ready to use this opportunity, so take the form seriously. Selected applicants will be contacted directly with next steps.</p>
+        <p>Applications are reviewed on a rolling basis, so applying earlier can mean an earlier response. We&apos;re looking for students who are ready to use the opportunity well, and every applicant will receive the outcome by email.</p>
       </section>
 
       <section id="faqs" className={`${styles.container} ${styles.faq}`} aria-labelledby="faq-title">
@@ -236,10 +256,10 @@ export default function DataCampPage() {
           </nav>
           <nav className={styles.footerLinks} aria-label="SEES Tech Hub social links">
             <h2>Connect</h2>
-            <Destination name="linkedin">LinkedIn <ArrowUpRight size={14} aria-hidden="true" /></Destination>
-            <Destination name="instagram">Instagram <ArrowUpRight size={14} aria-hidden="true" /></Destination>
-            <Destination name="x">X <ArrowUpRight size={14} aria-hidden="true" /></Destination>
-            <Destination name="whatsapp">WhatsApp <ArrowUpRight size={14} aria-hidden="true" /></Destination>
+            <Destination name="linkedin"><LinkedInIcon /> LinkedIn <ArrowUpRight size={14} aria-hidden="true" /></Destination>
+            <Destination name="instagram"><InstagramIcon /> Instagram <ArrowUpRight size={14} aria-hidden="true" /></Destination>
+            <Destination name="x"><XIcon /> X <ArrowUpRight size={14} aria-hidden="true" /></Destination>
+            <Destination name="whatsapp"><MessageCircle size={16} aria-hidden="true" /> WhatsApp <ArrowUpRight size={14} aria-hidden="true" /></Destination>
           </nav>
         </div>
         <div className={styles.footerCommunity}>

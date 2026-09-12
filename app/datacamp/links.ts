@@ -8,5 +8,3 @@ export const scholarshipLinks: Record<'application' | 'linkedin' | 'x' | 'instag
   whatsapp: 'https://chat.whatsapp.com/JAIc2yFhyqAL30lD3bBXis?s=cl&p=a&mlu=0&ilr=0',
   registration: '/login',
 };
-
-export const selectionTimeline: string | null = null;

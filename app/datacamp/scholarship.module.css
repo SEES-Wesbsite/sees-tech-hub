@@ -208,10 +208,11 @@
   .steps > li:not(:last-child)::before { left: 14px; top: 31px; }
   .stepBody { padding: 21px 18px; border-radius: 10px; }
   .steps h3 { font-size: 19px; }
-  .steps p { font-size: 13px; }
+  .steps p { font-size: 15px; line-height: 1.72; }
   .stepActions { gap: 7px; }
   .stepActions > :is(a, span) { flex: 1 0 auto; padding-inline: 9px; font-size: 11px; }
   .stepActions a svg:last-of-type { display: none; }
+  .steps .memberNote { font-size: 13px; }
   .stepApply .application, .stepApply .apply { width: 100%; }
   .stepApply .apply { gap: 18px; justify-content: space-between; padding-inline: 18px; }
   .footer { padding-top: 52px; }
