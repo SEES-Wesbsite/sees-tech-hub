@@ -57,6 +57,14 @@
 }
 
 :root {
+  /* DataCamp campaign palette. These names never change with the global theme. */
+  --scholarship-paper: #ffffff;
+  --scholarship-ink: #0B3D2E;
+  --scholarship-green: #1E7A57;
+  --scholarship-mint: #8FF0D6;
+  --scholarship-gold: #FFB703;
+  --scholarship-cream: #FFF8ED;
+
   --background: #ffffff;
   --foreground: #01120f;
 
