@@ -14,7 +14,7 @@ Approved 2026-09-11. This direction applies to `/datacamp`; the main homepage re
 
 `links.ts` is the source for all destinations. The Google Form, LinkedIn, Instagram, and X URLs are connected. WhatsApp matches the existing homepage. Registration currently uses `/login`.
 
-Applications are reviewed on a rolling basis. Every applicant receives their outcome by email.
+Applications are reviewed on a rolling basis. Every applicant receives their outcome by email. Each scholarship provides one full year of DataCamp access.
 
 ## Design reference
 

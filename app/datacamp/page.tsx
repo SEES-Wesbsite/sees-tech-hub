@@ -82,7 +82,7 @@ function InstagramIcon({ size = 16 }: { size?: number }) {
 }
 
 const benefits = [
-  "Full access to DataCamp's courses and learning tracks",
+  "A full year of access to DataCamp's courses and learning tracks",
   'Hands-on projects and certifications you can actually show for it',
   'A real head start in data, AI, and tech skills, no cost to you',
 ];
@@ -90,6 +90,7 @@ const benefits = [
 const questions = [
   { question: 'Who can apply?', answer: "Any student. You don't have to be a SEES or STH member to apply, though registered members get priority consideration." },
   { question: 'Is this really free?', answer: 'Yes. 500 full scholarships, no payment required at any point.' },
+  { question: 'How long does the DataCamp subscription last?', answer: 'The scholarship gives you a full year of access to DataCamp.' },
   { question: 'How will I know the outcome of my application?', answer: 'Applications are reviewed on a rolling basis, so applying earlier gives you a better chance of receiving an earlier response. We will email you whether or not you are selected.' },
   { question: "What if I'm not selected this time?", answer: 'Stay in the STH community, more opportunities like this come through regularly.' },
 ];
