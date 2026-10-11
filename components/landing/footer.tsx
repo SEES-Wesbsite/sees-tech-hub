@@ -1,133 +1,42 @@
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { Logo } from "@/components/ui/logo";
+import Image from 'next/image';
+import Link from 'next/link';
+import styles from './footer.module.css';
 
 export function Footer() {
   return (
-    <footer className="bg-slate-900 text-white py-16 md:py-24 px-6 border-t border-slate-800">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
-        {/* Brand Column */}
-        <div className="md:col-span-1">
-          <div className="flex items-center gap-2 font-semibold font-serif text-2xl tracking-tighter text-white mb-6">
-            <Logo variant="logomark" className="w-8 h-8 text-white" />
-            SEES Tech Hub.
-          </div>
-          <p className="text-slate-400 text-sm leading-relaxed mb-6">
-            Empowering students to master algorithms, build undeniable products,
-            and secure their future in tech.
-          </p>
-        </div>
-
-        {/* Links Column 1 */}
-        <div>
-          <h4 className="font-bold text-slate-200 mb-4 text-sm uppercase tracking-wider">
-            Platform
-          </h4>
-          <ul className="space-y-3">
-            <li>
-              <Link
-                href="/dashboard"
-                className="text-slate-400 hover:text-white transition-colors text-sm"
-              >
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/tasks"
-                className="text-slate-400 hover:text-white transition-colors text-sm"
-              >
-                DSA Sprints
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/events"
-                className="text-slate-400 hover:text-white transition-colors text-sm"
-              >
-                Alumni Talks
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/leaderboard"
-                className="text-slate-400 hover:text-white transition-colors text-sm"
-              >
-                Leaderboard
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Links Column 2 */}
-        <div>
-          <h4 className="font-bold text-slate-200 mb-4 text-sm uppercase tracking-wider">
-            Resources
-          </h4>
-          <ul className="space-y-3">
-            <li>
-              <Link
-                href="#"
-                className="text-slate-400 hover:text-white transition-colors text-sm"
-              >
-                Hackathon Guide
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="#"
-                className="text-slate-400 hover:text-white transition-colors text-sm"
-              >
-                Leetcode Vault
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="#"
-                className="text-slate-400 hover:text-white transition-colors text-sm"
-              >
-                Resume Review
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Action Column */}
-        <div>
-          <h4 className="font-bold text-slate-200 mb-4 text-sm uppercase tracking-wider">
-            Join Us
-          </h4>
-          <p className="text-slate-400 text-sm mb-4">
-            Ready to stop grinding alone?
-          </p>
-          <Link
-            href="/login"
-            className="inline-flex items-center gap-2 text-[#95fde2] font-bold hover:text-white transition-colors"
-          >
-            Create an Account <ArrowUpRight className="w-4 h-4" />
+    <footer className={styles.footer}>
+      <div className={styles.grid}>
+        <div className={styles.brand}>
+          <Link href="/" className={styles.logo} aria-label="SEES Tech Hub home">
+            <span className={styles.mark}><Image src="/logo/logomark.svg" alt="" width={100} height={100} /></span>
+            <span>SEES<small>TECH HUB</small></span>
           </Link>
+          <p>A place for students to connect, create, and contribute to tech at UNILAG.</p>
+        </div>
+        <nav aria-label="Explore SEES Tech Hub">
+          <h3>Explore</h3>
+          <ul>
+            <li><Link href="/">Home</Link></li>
+            <li><Link href="/datacamp">DataCamp Scholarships</Link></li>
+            <li><Link href="/volunteer">Volunteer with us</Link></li>
+            <li><Link href="/login">Member sign in</Link></li>
+          </ul>
+        </nav>
+        <nav aria-label="Follow SEES Tech Hub">
+          <h3>Follow along</h3>
+          <ul>
+            <li><a href="https://www.linkedin.com/company/sees-tech-hub/" target="_blank" rel="noopener noreferrer">LinkedIn<span className={styles.srOnly}> (opens in a new tab)</span></a></li>
+            <li><a href="https://www.instagram.com/sees_techhub" target="_blank" rel="noopener noreferrer">Instagram<span className={styles.srOnly}> (opens in a new tab)</span></a></li>
+            <li><a href="https://x.com/SEESTechHub" target="_blank" rel="noopener noreferrer">X<span className={styles.srOnly}> (opens in a new tab)</span></a></li>
+          </ul>
+        </nav>
+        <div className={styles.join}>
+          <h3>Stay connected</h3>
+          <p>Keep up with our events, activities, and announcements.</p>
+          <a className={styles.community} href="https://chat.whatsapp.com/JAIc2yFhyqAL30lD3bBXis?s=cl&p=a&mlu=0&ilr=0" target="_blank" rel="noopener noreferrer">Join our WhatsApp community<span className={styles.srOnly}> (opens in a new tab)</span></a>
         </div>
       </div>
-
-      <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-slate-500 text-xs">
-          © {new Date().getFullYear()} SEES Tech Hub. All rights reserved.
-        </p>
-        <div className="flex items-center gap-6">
-          <Link
-            href="#"
-            className="text-slate-500 hover:text-white text-xs transition-colors"
-          >
-            Privacy Policy
-          </Link>
-          <Link
-            href="#"
-            className="text-slate-500 hover:text-white text-xs transition-colors"
-          >
-            Terms of Service
-          </Link>
-        </div>
-      </div>
+      <div className={styles.bottom}><small>© {new Date().getUTCFullYear()} SEES Tech Hub. All rights reserved.</small><span>University of Lagos</span></div>
     </footer>
   );
 }
