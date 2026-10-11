@@ -10,6 +10,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
+  --font-instrument-serif: var(--font-instrument);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -57,6 +58,7 @@
 }
 
 :root {
+  color-scheme: light;
   /* DataCamp campaign palette. These names never change with the global theme. */
   --scholarship-paper: #ffffff;
   --scholarship-ink: #0B3D2E;
@@ -245,3 +247,9 @@
 
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+@layer utilities {
+  .font-instrument-serif {
+    font-family: var(--font-instrument), Georgia, serif;
+  }
+}

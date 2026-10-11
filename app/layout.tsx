@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { DM_Sans, Playfair_Display } from "next/font/google";
+import { Geist, Playfair_Display, Instrument_Serif } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 import { Toaster } from "sonner";
 
-const fontSans = DM_Sans({
+const fontSans = Geist({
   variable: "--font-sans",
   subsets: ["latin"],
 });
@@ -12,6 +12,16 @@ const fontSans = DM_Sans({
 const fontSerif = Playfair_Display({
   variable: "--font-serif",
   subsets: ["latin"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const fontInstrumentSerif = Instrument_Serif({
+  variable: "--font-instrument",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -48,14 +58,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fontSans.variable} ${fontSerif.variable} font-sans h-full antialiased`}
+      className={`${fontSans.variable} ${fontSerif.variable} ${fontInstrumentSerif.variable} font-sans h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col selection:bg-brand selection:text-[#95fde2]">
         <Providers>
           {children}
           <Toaster
-            theme="dark"
+            theme="light"
             position="top-center"
             richColors
             toastOptions={{ style: { fontFamily: "var(--font-sans)" } }}
