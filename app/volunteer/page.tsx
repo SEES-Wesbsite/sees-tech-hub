@@ -18,10 +18,11 @@ export function generateMetadata(): Metadata {
   const description = closed
     ? 'The October 2026 SEES Tech Hub volunteer intake is closed. Explore the seven teams behind our community.'
     : 'Join one of seven SEES Tech Hub volunteer teams. Contribute your skills, build practical experience, and apply by October 18, 2026 at 11:59 PM WAT.';
+  const image = { url: '/api/og/volunteer?v=1&state=' + (closed ? 'closed' : 'open'), width: 1200, height: 630, alt: 'SEES Tech Hub volunteer recruitment. ' + (closed ? 'Applications closed.' : 'Apply by Sunday, October 18, 2026, at 11:59 PM WAT.') };
   return {
     title, description, alternates: { canonical: '/volunteer' },
-    openGraph: { title: title + ' | SEES Tech Hub', description, url: '/volunteer', siteName: 'SEES Tech Hub', locale: 'en_NG', type: 'website' },
-    twitter: { card: 'summary', title: title + ' | SEES Tech Hub', description },
+    openGraph: { title: title + ' | SEES Tech Hub', description, url: '/volunteer', siteName: 'SEES Tech Hub', locale: 'en_NG', type: 'website', images: [image] },
+    twitter: { card: 'summary_large_image', title: title + ' | SEES Tech Hub', description, images: [image] },
   };
 }
 
