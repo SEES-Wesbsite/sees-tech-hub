@@ -19,3 +19,5 @@ The homepage and volunteer page share the deep-green footer. Volunteer entrances
 ## Verification
 
 Run npx tsc --noEmit, focused ESLint, and node --experimental-strip-types --test tests/volunteer.test.mjs. Deadline tests cover the Lagos/UTC conversion, unit carries, and exact before/at/after closing boundaries.
+
+For deployment verification, run the production build followed by `node scripts/check-volunteer-og-bundle.mjs`. This renders the OG image from only the traced deployment files in an isolated temporary directory, catching missing renderer files that a full local checkout masks.

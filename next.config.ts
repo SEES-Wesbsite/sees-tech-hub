@@ -3,6 +3,10 @@ import { withSentryConfig } from '@sentry/nextjs';
 
 const nextConfig: NextConfig = {
   turbopack: { root: process.cwd() },
+  // ImageResponse dynamically imports this renderer; Turbopack omits it from the route trace.
+  outputFileTracingIncludes: {
+    '/api/og/volunteer': ['./node_modules/next/dist/compiled/@vercel/og/**/*'],
+  },
   async redirects() {
     // Temporary redirects keep existing landing links and bookmarks usable.
     return [
