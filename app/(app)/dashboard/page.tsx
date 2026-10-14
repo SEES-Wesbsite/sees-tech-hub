@@ -1,11 +1,13 @@
-import Link from 'next/link';
+import type { Metadata } from 'next';
 import { requireCompletedProfile } from '@/lib/profile';
-import { ProfileCard } from '@/components/profile-card';
+import { MemberHome } from '@/components/member-home/member-home';
+
+export const metadata: Metadata = {
+  title: 'Member home',
+  robots: { index: false, follow: false },
+};
 
 export default async function DashboardPage() {
   const profile = await requireCompletedProfile();
-  return <div className="space-y-6">
-    <ProfileCard profile={profile} />
-    <Link href="/profile" className="inline-block text-brand underline underline-offset-4">Edit your profile</Link>
-  </div>;
+  return <MemberHome profile={profile} initialNow={new Date().getTime()} />;
 }

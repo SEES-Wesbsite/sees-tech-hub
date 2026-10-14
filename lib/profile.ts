@@ -2,7 +2,7 @@ import { cache } from 'react';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 
-export const PROFILE_COLUMNS = 'id,full_name,preferred_name,avatar_url,github_url,primary_stacks,portfolio_link,social_link,onboarding_status' as const;
+export const PROFILE_COLUMNS = 'id,full_name,preferred_name,avatar_url,github_url,primary_stacks,portfolio_link,social_link,onboarding_status,created_at' as const;
 
 // Request-scoped memoization shares authentication/profile reads between pages.
 export const getOwnProfile = cache(async () => {

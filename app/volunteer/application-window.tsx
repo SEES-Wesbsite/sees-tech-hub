@@ -45,7 +45,7 @@ export function ApplicationWindow({ initialNow, children }: { initialNow: number
   return <WindowContext.Provider value={{ now, closeIfExpired }}>{children}</WindowContext.Provider>;
 }
 
-function useApplicationWindow() {
+export function useApplicationWindow() {
   const window = useContext(WindowContext);
   if (!window) throw new Error('Recruitment controls require ApplicationWindow');
   return window;
