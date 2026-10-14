@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     // Temporary redirects keep existing landing links and bookmarks usable.
     return [
-      '/admin', '/admin/dashboard', '/admin/assignments/:path*', '/admin/events/:path*',
+      '/admin/dashboard', '/admin/assignments/:path*', '/admin/events/:path*',
       '/admin/hackathon/:path*', '/admin/opportunities/:path*', '/admin/quests/:path*',
       '/events/:path*', '/opportunities/:path*', '/quests/:path*',
       '/quiz/:path*', '/onboarding/quiz/:path*', '/hackathon/:path*',
